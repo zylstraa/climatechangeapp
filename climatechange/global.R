@@ -104,3 +104,6 @@ ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 
 # ff_emiss <- plot_ly(country_choice, x=~Year,y=~Total, mode='lines')
 # ff_emiss
+
+
+

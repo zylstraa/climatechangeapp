@@ -1,7 +1,8 @@
 #UI Source pages 
-source("globalcauses.r")
-source('globaleffects.r')
-
+source("tabs/causes.r")
+source('tabs/effects.r')
+source('tabs/action.r')
+source('tabs/homepage.r')
 
 
 
@@ -13,9 +14,10 @@ shinyUI(
 
     # Application title
     navbarPage(title='Climate Change: Midcourse Project',
-               globalcauses,
-               globaleffects,
-               #nationaldata,
-               selected=globalcauses
+               home,
+               causes,
+               effects,
+               action,
+               selected=home
         )
     )

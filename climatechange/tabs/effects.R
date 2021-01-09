@@ -1,5 +1,5 @@
-globaleffects <-
-  tabPanel('Global effects',
+effects <-
+  tabPanel('Effects',
            sidebarPanel(
              plotlyOutput('seaplot')
            )
