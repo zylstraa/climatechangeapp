@@ -1,15 +1,59 @@
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-    output$distPlot <- renderPlot({
-
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
+#Data global temperature cleanup (causes)
+    global_tempmonth <- 
+        global_tempmonth %>% 
+        group_by(Date) %>% 
+        summarise(Anomoly_Avg=mean(Mean))
+    
+#Plot global temperature plotting output (causes)
+    output$tempplot <- renderPlot({
+        tempplot <- global_tempmonth %>% 
+            ggplot(aes(x=Date, y=Anomoly_Avg))+geom_line()
+        tempplot
+    })
+    
+#Data global CO2 levels cleanup (causes)
+    CO2 <- 
+        CO2 %>% 
+        select(-c('Decimal Date','Average','Interpolated','Number of Days')) %>% 
+        rename('ppm_CO2'='Trend')
+    
+#Plot global CO2 levels (causes)
+    output$CO2plot <- renderPlotly({
+        CO2plot <- plot_ly(CO2, x=~Date,y=~ppm_CO2,type='scatter',mode='lines', line=list(color='Blue'),
+                           showlegend=FALSE, name='CO2 air levels (ppm)')
+        CO2plot
+    })
+    
+#Data global sea levels cleanup (effects)
+    sealevel <- 
+        sealevel %>% 
+        select(-`NOAA Adjusted Sea Level`) %>% 
+        rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
+    
+#Plot global sea levels (effects)
+    output$seaplot <- renderPlotly({
+        seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
+                           line=list(color='transparent'),
+                           showlegend=FALSE, name='Upper Error')
+        seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
+                                         fill='tonexty', fillcolor='rgba(0,100,80,0.2)', line=list(color='transparent'),
+                                         showlegend=FALSE,name='Lower Error')  
+        seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
+                                         line=list(color='rgb(0,100,80)'),
+                                         name='Average level rise')
+        seaplot
     })
 
+#Data national fossil fuel emissions cleanup (national)
+    country_choice <- ff_co2 %>% 
+        filter(Country=='UNITED STATES OF AMERICA')
+    
+#Plot national fossil fuel emissions (national)
+    output$ffCO2 <- renderPlotly({
+        ff_emiss <- plot_ly(country_choice, x=~Year,y=~Total, mode='lines')
+        ff_emiss
+    })
 })
