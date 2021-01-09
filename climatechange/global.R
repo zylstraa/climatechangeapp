@@ -106,4 +106,40 @@ ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 # ff_emiss
 
 
+#First CAUSE TAB graph: global total over time CO2 fossil fuel emissions
+# ff_co2 <-
+#   ff_co2 %>% 
+#   rename('Bunker.fuel'='Bunker fuels (Not in Total)')
+# 
+# ff_co2 <- ff_co2 %>% 
+#   mutate(Total_ff = Total+Bunker.fuel)
+# 
+# global_ff <- 
+#   ff_co2 %>% 
+#   filter(Year>=1900) %>% 
+#   group_by(Year) %>% 
+#   summarise(Total = sum(Total_ff))
+# 
+# globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
+#                      line = list(shape = 'linear', color="#455E14", width= 4))
+# globalffg <- globalffg %>% layout(title = "Global CO2 Emissions from Fossil Fuels (1900-2014)",
+#         xaxis = list(title = "Year"),
+#        yaxis = list (title = "Million metric tons of Carbon"))
+# globalffg
+
+#Second CAUSE TAB graph: country per capita metric tons of fossil fuels emitted
+#Filtering from year 1990
+ff_co2pc <- 
+  ff_co2 %>% 
+  rename('Per_Capita'='Per Capita') %>% 
+  filter(Year>=1950)
+
+percapg <- plot_ly(ff_co2pc, x=~Year, y=~Per_Capita,type='scatter',mode='lines',linetype=~Country)
+percapg <- percapg %>% layout(showlegend=FALSE)
+percapg
+
+#I am trying to get it so that only the top 25 countries (according to the most recent year) are shown but i have yet to get it to work. Stopping here Jan 9th
+top50 <-
+  ff_co2pc %>% 
+  filter(Year==2014)
 

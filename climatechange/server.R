@@ -1,7 +1,32 @@
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-#Data global temperature cleanup (causes)
+#Data CAUSES:
+    ff_co2 <-
+        ff_co2 %>% 
+        rename('Bunker.fuel'='Bunker fuels (Not in Total)')
+    
+    ff_co2 <- ff_co2 %>% 
+        mutate(Total_ff = Total+Bunker.fuel)
+    
+    global_ff <- 
+        ff_co2 %>% 
+        filter(Year>=1900) %>% 
+        group_by(Year) %>% 
+        summarise(Total = sum(Total_ff))
+    
+#Plot CAUSES:
+    output$globalffg <- renderPlotly({
+        globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
+                             line = list(shape = 'linear', color="#455E14", width= 4))
+        globalffg <- globalffg %>% layout(title = "Global CO2 Emissions from Fossil Fuels (1900-2014)",
+                                          xaxis = list(title = "Year"),
+                                          yaxis = list (title = "Million metric tons of Carbon"))
+        globalffg
+    })
+    
+        
+#Data global temperature cleanup (causes), just kidding move this to effects
     global_tempmonth <- 
         global_tempmonth %>% 
         group_by(Date) %>% 
@@ -14,18 +39,20 @@ shinyServer(function(input, output) {
         tempplot
     })
     
-#Data global CO2 levels cleanup (causes)
-    CO2 <- 
-        CO2 %>% 
-        select(-c('Decimal Date','Average','Interpolated','Number of Days')) %>% 
-        rename('ppm_CO2'='Trend')
+#Data global CO2 levels cleanup (causes), commenting out because this is covered by globalffg
+#     CO2 <- 
+#         CO2 %>% 
+#         select(-c('Decimal Date','Average','Interpolated','Number of Days')) %>% 
+#         rename('ppm_CO2'='Trend')
+#     
+# #Plot global CO2 levels (causes)
+#     output$CO2plot <- renderPlotly({
+#         CO2plot <- plot_ly(CO2, x=~Date,y=~ppm_CO2,type='scatter',mode='lines', line=list(color='Blue'),
+#                            showlegend=FALSE, name='CO2 air levels (ppm)')
+#         CO2plot
+#     })
     
-#Plot global CO2 levels (causes)
-    output$CO2plot <- renderPlotly({
-        CO2plot <- plot_ly(CO2, x=~Date,y=~ppm_CO2,type='scatter',mode='lines', line=list(color='Blue'),
-                           showlegend=FALSE, name='CO2 air levels (ppm)')
-        CO2plot
-    })
+
     
 #Data global sea levels cleanup (effects)
     sealevel <- 

@@ -1,8 +1,8 @@
 causes <-
   tabPanel('Causes',
    sidebarPanel(
-#notice this is a GG PLOT not plotly, will need to be adjusted
-      plotOutput('tempplot')
+#formatting needs adjusting once all graphs are in
+      plotlyOutput('globalffg')
    ), 
    
    mainPanel(
