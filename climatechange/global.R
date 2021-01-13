@@ -6,43 +6,6 @@ library(plotly)
 #I'm not sure if I need to do this, however my RStudio keeps adjusting my working directory every time I open it.
 setwd("~/nss_projects/MidcourseProject/climatechangeapp/climatechange")
 
-# #Temperature data: this is extremely granular so I am commenting it out for the time being. If I need to, I can come back to it.
-# 
-# 
-# #Reading in the top 5 most populous cities in the US temperature data:
-# USA_NYC <- read_csv('data/NYC.csv')
-# USA_LA <- read_csv('data/LA.csv')
-# USA_Chicago <- read_csv('data/Chicago.csv')
-# USA_Houston <- read_csv('data/Houston.csv')
-# USA_Phoenix <- read_csv('data/Phoenix.csv')
-# 
-# #Let's use temperature information from 1950 on (due to weather balloons and satellite readings for temperature coming about in the 1950s)--
-# #commenting this all out since it looks like 70 years isn't a big enough time frame. will keep it from the 1850s since that's when temperature data
-# #started to be collected
-# # USA_NYC <- 
-# #   USA_NYC %>% 
-# #   filter(Date >= '1950-01-01')
-# # 
-# # USA_LA <- 
-# #   USA_LA %>% 
-# #   filter(Date >= '1950-01-01')
-# # 
-# # USA_Chicago <- 
-# #   USA_Chicago %>% 
-# #   filter(Date >= '1950-01-01')
-# # 
-# # USA_Houston <- 
-# #   USA_Houston %>% 
-# #   filter(Date >= '1950-01-01')
-# # 
-# # USA_Phoenix <- 
-# #   USA_Phoenix %>% 
-# #   filter(Date >= '1950-01-01')
-# 
-# 
-# 
-
-
 #Global temperature found at https://datahub.io/core/global-temp#data
 global_temp <- read_csv('data/globaltempannual.csv')
 global_tempmonth <- read_csv('data/global_monthly_tempanom.csv')
@@ -106,40 +69,60 @@ ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 # ff_emiss
 
 
-#First CAUSE TAB graph: global total over time CO2 fossil fuel emissions
+# First CAUSE TAB graph: global total over time CO2 fossil fuel emissions
 # ff_co2 <-
-#   ff_co2 %>% 
+#   ff_co2 %>%
 #   rename('Bunker.fuel'='Bunker fuels (Not in Total)')
 # 
-# ff_co2 <- ff_co2 %>% 
+# ff_co2 <- ff_co2 %>%
 #   mutate(Total_ff = Total+Bunker.fuel)
 # 
-# global_ff <- 
-#   ff_co2 %>% 
-#   filter(Year>=1900) %>% 
-#   group_by(Year) %>% 
+# global_ff <-
+#   ff_co2 %>%
+#   filter(Year>=1900) %>%
+#   group_by(Year) %>%
 #   summarise(Total = sum(Total_ff))
 # 
-# globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
+# globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines',
 #                      line = list(shape = 'linear', color="#455E14", width= 4))
 # globalffg <- globalffg %>% layout(title = "Global CO2 Emissions from Fossil Fuels (1900-2014)",
 #         xaxis = list(title = "Year"),
 #        yaxis = list (title = "Million metric tons of Carbon"))
 # globalffg
 
-#Second CAUSE TAB graph: country per capita metric tons of fossil fuels emitted
+#Second CAUSE TAB graph: CO2 levels in the air globally
+#choosing to use 'Trend' because it has the same information as interpolated and average but is corrected for seasonality
+# CO2 <- CO2 %>% 
+#   select(Date,Trend) %>% 
+#   rename('CO2_levels'='Trend')
+# #adjusting how the date/time frame is formatted
+# CO2$Date <- as.POSIXct(CO2$Date, format="%Y/%m/%d")
+# CO2$Date <- format(CO2$Date, format="%b %Y")
+#plotting the information, formatting so plotly doesn't order things alphabetically
+# CO2$Date <- factor(CO2$Date, levels = CO2[["Date"]])
+# CO2g <- plot_ly(CO2, x=~Date ,y=~CO2_levels, type='scatter', mode='lines',line = list(shape = 'linear', color="#455E14", width= 4))
+# CO2g <- CO2g %>% layout(title='Global atmospheric CO2 levels (1958-2018)',
+#                         yaxis=list(title='CO2 levels (ppm)'))
+# CO2g
+
+
+#Third CAUSE TAB graph: country per capita metric tons of fossil fuels emitted
 #Filtering from year 1990
-ff_co2pc <- 
-  ff_co2 %>% 
-  rename('Per_Capita'='Per Capita') %>% 
-  filter(Year>=1950)
+# ff_co2pc <- 
+#   ff_co2 %>% 
+#   rename('Per_Capita'='Per Capita') %>% 
+#   filter(Year>=1950)
+# 
+# percapg <- plot_ly(ff_co2pc, x=~Year, y=~Per_Capita,type='scatter',mode='lines',linetype=~Country)
+# percapg <- percapg %>% layout(showlegend=FALSE)
+# percapg
+# 
+# #This will be a donut graph showing the percentage each country is responsible for
+# ff100 <-
+#   ff_co2pc %>% 
+#   filter(Year==2014) %>% 
+#   arrange(desc(Total_ff)) %>% 
+#   head(100) %>% 
+#   select(Country,Total_ff)
 
-percapg <- plot_ly(ff_co2pc, x=~Year, y=~Per_Capita,type='scatter',mode='lines',linetype=~Country)
-percapg <- percapg %>% layout(showlegend=FALSE)
-percapg
-
-#I am trying to get it so that only the top 25 countries (according to the most recent year) are shown but i have yet to get it to work. Stopping here Jan 9th
-top50 <-
-  ff_co2pc %>% 
-  filter(Year==2014)
-
+#Also would like to add interactivity where you can compare up to 3 countriess

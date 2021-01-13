@@ -5,7 +5,6 @@ shinyServer(function(input, output) {
     ff_co2 <-
         ff_co2 %>% 
         rename('Bunker.fuel'='Bunker fuels (Not in Total)')
-    
     ff_co2 <- ff_co2 %>% 
         mutate(Total_ff = Total+Bunker.fuel)
     
@@ -15,6 +14,12 @@ shinyServer(function(input, output) {
         group_by(Year) %>% 
         summarise(Total = sum(Total_ff))
     
+    CO2 <- CO2 %>% 
+        select(Date,Trend) %>% 
+        rename('CO2_levels'='Trend')
+    CO2$Date <- as.POSIXct(CO2$Date, format="%Y/%m/%d")
+    CO2$Date <- format(CO2$Date, format="%b %Y")
+    
 #Plot CAUSES:
     output$globalffg <- renderPlotly({
         globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
@@ -23,6 +28,14 @@ shinyServer(function(input, output) {
                                           xaxis = list(title = "Year"),
                                           yaxis = list (title = "Million metric tons of Carbon"))
         globalffg
+    })
+    
+    output$CO2g <- renderPlotly({
+        CO2$Date <- factor(CO2$Date, levels = CO2[["Date"]])
+        CO2g <- plot_ly(CO2, x=~Date ,y=~CO2_levels, type='scatter', mode='lines',line = list(shape = 'linear', color="#455E14", width= 4))
+        CO2g <- CO2g %>% layout(title='Global atmospheric CO2 levels (1958-2018)',
+                                yaxis=list(title='CO2 levels (ppm)'))
+        CO2g
     })
     
         

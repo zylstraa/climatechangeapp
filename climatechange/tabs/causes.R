@@ -6,6 +6,6 @@ causes <-
    ), 
    
    mainPanel(
-     plotlyOutput('CO2plot')
+     plotlyOutput('CO2g')
    )
   )
