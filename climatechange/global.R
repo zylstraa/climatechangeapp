@@ -106,23 +106,35 @@ ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 # CO2g
 
 
-#Third CAUSE TAB graph: country per capita metric tons of fossil fuels emitted
-#Filtering from year 1990
-# ff_co2pc <- 
-#   ff_co2 %>% 
-#   rename('Per_Capita'='Per Capita') %>% 
-#   filter(Year>=1950)
-# 
-# percapg <- plot_ly(ff_co2pc, x=~Year, y=~Per_Capita,type='scatter',mode='lines',linetype=~Country)
-# percapg <- percapg %>% layout(showlegend=FALSE)
-# percapg
-# 
+#Third CAUSE TAB graph: globally country per capita metric tons of fossil fuels emitted, still adjusting this plot stopping here Jan 12
+ff_co2pc <- 
+  ff_co2 %>% 
+  rename('Per_Capita'='Per Capita') %>% 
+  group_by(Year) 
+
+percapg <- plot_ly(ff_co2pc, x=~Per_Capita, y=~Total_ff,text=~Country,type='scatter',mode='markers',marker = list(size =~Per_Capita, opacity = 0.5, color = 'rgb(255, 65, 54)'))
+percapg <- percapg %>% layout(showlegend=FALSE)
+percapg
+
 # #This will be a donut graph showing the percentage each country is responsible for
+# ff_co2 <-
+#   ff_co2 %>%
+#   rename('Bunker.fuel'='Bunker fuels (Not in Total)')
+# 
+# ff_co2 <- ff_co2 %>%
+#   mutate(Total_ff = Total+Bunker.fuel)
+#code above is duplicated and won't be needed to be copied into server
 # ff100 <-
-#   ff_co2pc %>% 
+#   ff_co2 %>% 
 #   filter(Year==2014) %>% 
 #   arrange(desc(Total_ff)) %>% 
 #   head(100) %>% 
 #   select(Country,Total_ff)
+#plotting the donut graph
+# ff100g <- ff100 %>% plot_ly(labels =~Country, values=~Total_ff)
+# ff100g <- ff100g %>% add_pie(hole=0.6)
+# ff100g <- ff100g %>% layout(title='CO2 fossil fuel emissions by country', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+#                             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+# ff100g
 
 #Also would like to add interactivity where you can compare up to 3 countriess

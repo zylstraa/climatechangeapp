@@ -20,6 +20,13 @@ shinyServer(function(input, output) {
     CO2$Date <- as.POSIXct(CO2$Date, format="%Y/%m/%d")
     CO2$Date <- format(CO2$Date, format="%b %Y")
     
+    ff100 <-
+        ff_co2 %>% 
+        filter(Year==2014) %>% 
+        arrange(desc(Total_ff)) %>% 
+        head(100) %>% 
+        select(Country,Total_ff)
+    
 #Plot CAUSES:
     output$globalffg <- renderPlotly({
         globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
@@ -38,6 +45,13 @@ shinyServer(function(input, output) {
         CO2g
     })
     
+    output$ff100g <- renderPlotly({
+        ff100g <- ff100 %>% plot_ly(labels =~Country, values=~Total_ff)
+        ff100g <- ff100g %>% add_pie(hole=0.6)
+        ff100g <- ff100g %>% layout(title='CO2 fossil fuel emissions by country', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                                    yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+        ff100g
+    })
         
 #Data global temperature cleanup (causes), just kidding move this to effects
     global_tempmonth <- 

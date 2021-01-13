@@ -6,6 +6,7 @@ causes <-
    ), 
    
    mainPanel(
-     plotlyOutput('CO2g')
+     plotlyOutput('CO2g'),
+     plotlyOutput('ff100g')
    )
   )
