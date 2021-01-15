@@ -19,8 +19,59 @@ CO2 <- read_csv('data/co2airlevels.csv')
 #National Fossil fuel emissions data source https://datahub.io/core/co2-fossil-by-nation#data
 ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 
-
-
+#Natural disasters source: https://public.emdat.be/data (containing:
+# Volcanic activity
+# Ash fall
+# Lahar
+# Pyroclastic flow
+# Lava flow
+# 
+# Mass movement (dry)
+# Rockfall
+# Landslide
+# Avalanche
+# Subsidence
+# 
+# Earthquake
+# Ground movement
+# Tsunami
+# 
+# Meteorological
+# 
+# Extreme temperature
+# Cold wave
+# Heat wave
+# Severe winter conditions
+# Fog
+# 
+# Storm
+# Convective storm
+# Extra-tropical storm
+# Tropical cyclone
+# 
+# 
+# Wave action
+# Rogue wave
+# Seiche
+# 
+# Landslide
+# Avalanche
+# Landslide
+# Subsidence
+# Rockfall
+# Mudslide
+# 
+# Flood
+# Coastal flood
+# Flash flood
+# Wildfire
+# Forest fire
+# Land fire (Brush, Bush, Pasture)
+# Glacial lake outburst
+# 
+# Drought
+# Famine
+disaster <- read_csv('data/naturaldisasters.csv')
 
 
 
@@ -137,4 +188,11 @@ percapg
 #                             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
 # ff100g
 
-#Also would like to add interactivity where you can compare up to 3 countriess
+#Also would like to add interactivity where you can compare up to 3 countries
+
+
+#Effects: Storms & Natural Disasters
+#Effects: Sea level rising
+#Effects: Temperature rising
+
+
