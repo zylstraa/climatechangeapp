@@ -182,7 +182,7 @@ forest_area <- read_csv('data/forestarea.csv')
 # percapg <- percapg %>% layout(showlegend=FALSE)
 # percapg
 
-# #This will be a donut graph showing the percentage each country is responsible for, make two graphs: all countries w/ <2% lumped as 'other' and another where the smaller percentage countries are viewed closer
+#This will be a donut graph showing the percentage each country is responsible for, make two graphs: all countries w/ <2% lumped as 'other' and another where the smaller percentage countries are viewed closer
 # ff_co2 <-
 #   ff_co2 %>%
 #   rename('Bunker.fuel'='Bunker fuels (Not in Total)')
@@ -190,18 +190,53 @@ forest_area <- read_csv('data/forestarea.csv')
 # ff_co2 <- ff_co2 %>%
 #   mutate(Total_ff = Total+Bunker.fuel)
 #code above is duplicated and won't be needed to be copied into server
-# ff100 <-
-#   ff_co2 %>% 
-#   filter(Year==2014) %>% 
-#   arrange(desc(Total_ff)) %>% 
-#   head(100) %>% 
-#   select(Country,Total_ff)
-#plotting the donut graph
-# ff100g <- ff100 %>% plot_ly(labels =~Country, values=~Total_ff)
-# ff100g <- ff100g %>% add_pie(hole=0.6)
-# ff100g <- ff100g %>% layout(title='CO2 fossil fuel emissions by country', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+# donut1 <-
+#   ff_co2 %>%
+#   filter(Year==2014) %>%
+#   arrange(desc(Total_ff)) %>%
+#   head(100) %>%
+#   select(Country,Total_ff) %>% 
+#   mutate(Country= case_when(
+#   Total_ff <= 181333 ~'Countries with less than 2% contribution',
+#   Total_ff > 181333 ~Country
+#   )
+#     )
+# 
+# donut2 <-
+#   ff_co2 %>%
+#   filter(Year==2014) %>%
+#   arrange(desc(Total_ff)) %>%
+#   head(100) %>%
+#   select(Country,Total_ff) %>% 
+#   filter(Total_ff <= 181333) %>% 
+#   mutate(Country= case_when(
+#     Total_ff <= 40232 ~'Countries with less than 1% contribution',
+#     Total_ff > 40232 ~Country
+#   )
+#   )
+
+#plotting the 1st donut graph (lumping <2% into its own group)
+# color1 <- c('#677c40','#788b55','#89996a','#9aa87f','#abb695','#bbc5aa', '#eef0e9')
+# donut1g <- donut1 %>% plot_ly(labels =~Country, values=~Total_ff, marker=list(colors=color1,line=list(color='#FFFFFF',width=1)))
+# donut1g <- donut1g %>% add_pie(hole=0.6)
+# donut1g <- donut1g %>% layout(title='CO2 fossil fuel emissions by country (in million metric tons)', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
 #                             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-# ff100g
+# donut1g
+# 
+# #plotting the 2nd donut graph
+# color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073', 
+#             '#245749', '#296e5b','#2e856e','355b35',
+#             '3b613b', '416740', '476d46', '4d734c', '537952', '598058','#569985','#78ad9c',
+#             '158e93','00adb3','53bbbf','7cc9cc',
+#             'e0f1f2','c0e4e5','9fd6d8',
+#             '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9'
+#             )
+# 
+# donut2g <- donut2 %>% plot_ly(labels =~Country, values=~Total_ff,marker=list(colors=color2,line=list(color='#FFFFFF',width=1)))
+# donut2g <- donut2g %>% add_pie(hole=0.6)
+# donut2g <- donut2g %>% layout(title='CO2 fossil fuel emissions by country (in million metric tons)', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+#                               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+# donut2g
 
 #Causes: deforestation: embed a video (no interactivity) of a heatmap %forest land data set choropleth
 View(forest_area)

@@ -26,12 +26,30 @@ shinyServer(function(input, output) {
     datevals <- c('Feb 1960','Feb 1965','Feb 1970','Feb 1975','Feb 1980','Feb 1985','Feb 1990','Feb 1995','Feb 2000','Feb 2005','Feb 2010','Feb 2015')
     showvals <- c('1960', '1965', '1970', '1975', '1980','1985','1990','1995','2000','2005','2010','2015')
     
-    ff100 <-
-        ff_co2 %>% 
-        filter(Year==2014) %>% 
-        arrange(desc(Total_ff)) %>% 
-        head(100) %>% 
-        select(Country,Total_ff)
+    donut1 <-
+        ff_co2 %>%
+        filter(Year==2014) %>%
+        arrange(desc(Total_ff)) %>%
+        head(100) %>%
+        select(Country,Total_ff) %>% 
+        mutate(Country= case_when(
+            Total_ff <= 181333 ~'Countries with less than 2% contribution',
+            Total_ff > 181333 ~Country
+        )
+        )
+    
+    donut2 <-
+        ff_co2 %>%
+        filter(Year==2014) %>%
+        arrange(desc(Total_ff)) %>%
+        head(100) %>%
+        select(Country,Total_ff) %>% 
+        filter(Total_ff <= 181333) %>% 
+        mutate(Country= case_when(
+            Total_ff <= 40232 ~'Countries with less than 1% contribution',
+            Total_ff > 40232 ~Country
+        )
+        )
     
 #Plot CAUSES:
     output$globalffg <- renderPlotly({
@@ -61,12 +79,30 @@ shinyServer(function(input, output) {
         CO2g
     })
     
-    output$ff100g <- renderPlotly({
-        ff100g <- ff100 %>% plot_ly(labels =~Country, values=~Total_ff)
-        ff100g <- ff100g %>% add_pie(hole=0.6)
-        ff100g <- ff100g %>% layout(title='CO2 fossil fuel emissions by country', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-                                    yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-        ff100g
+    
+    output$donut1 <- renderPlotly({
+        color1 <- c('#677c40','#788b55','#89996a','#9aa87f','#abb695','#bbc5aa', '#eef0e9')
+        donut1g <- donut1 %>% plot_ly(labels =~Country, values=~Total_ff, marker=list(colors=color1,line=list(color='#FFFFFF',width=1)))
+        donut1g <- donut1g %>% add_pie(hole=0.6)
+        donut1g <- donut1g %>% layout(title='CO2 fossil fuel emissions by country (in million metric tons)', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                                  yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+        donut1g
+    })
+    
+    #plotting the 2nd donut graph
+    output$donut2 <- renderPlotly({
+        color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073', 
+                '#245749', '#296e5b','#2e856e','355b35',
+                '3b613b', '416740', '476d46', '4d734c', '537952', '598058','#569985','#78ad9c',
+                '158e93','00adb3','53bbbf','7cc9cc',
+                'e0f1f2','c0e4e5','9fd6d8',
+                '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9')
+    
+        donut2g <- donut2 %>% plot_ly(labels =~Country, values=~Total_ff,marker=list(colors=color2,line=list(color='#FFFFFF',width=1)))
+        donut2g <- donut2g %>% add_pie(hole=0.6)
+        donut2g <- donut2g %>% layout(title='CO2 fossil fuel emissions by country (in million metric tons)', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                                  yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+        donut2g
     })
         
 #Data global temperature cleanup (causes), just kidding move this to effects
