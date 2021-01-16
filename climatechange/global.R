@@ -2,6 +2,7 @@ library(shiny)
 library(tidyverse)
 library(dismo)
 library(plotly)
+library(shinydashboard)
 
 #I'm not sure if I need to do this, however my RStudio keeps adjusting my working directory every time I open it.
 setwd("~/nss_projects/MidcourseProject/climatechangeapp/climatechange")
@@ -73,6 +74,8 @@ ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 # Famine
 disaster <- read_csv('data/naturaldisasters.csv')
 
+#deforestation: CAUSES https://data.worldbank.org/indicator/AG.LND.FRST.ZS?view=chart
+forest_area <- read_csv('data/forestarea.csv')
 
 
 #Global temperature focus:
@@ -143,31 +146,43 @@ disaster <- read_csv('data/naturaldisasters.csv')
 
 #Second CAUSE TAB graph: CO2 levels in the air globally
 #choosing to use 'Trend' because it has the same information as interpolated and average but is corrected for seasonality
-# CO2 <- CO2 %>% 
-#   select(Date,Trend) %>% 
+# CO2 <- CO2 %>%
+#   select(Date,Trend) %>%
 #   rename('CO2_levels'='Trend')
 # #adjusting how the date/time frame is formatted
 # CO2$Date <- as.POSIXct(CO2$Date, format="%Y/%m/%d")
 # CO2$Date <- format(CO2$Date, format="%b %Y")
-#plotting the information, formatting so plotly doesn't order things alphabetically
+# #plotting the information, formatting so plotly doesn't order things alphabetically
 # CO2$Date <- factor(CO2$Date, levels = CO2[["Date"]])
-# CO2g <- plot_ly(CO2, x=~Date ,y=~CO2_levels, type='scatter', mode='lines',line = list(shape = 'linear', color="#455E14", width= 4))
+# #I only want the year to show, not every month/year combo
+# datevals <- c('Feb 1960','Feb 1965','Feb 1970','Feb 1975','Feb 1980','Feb 1985','Feb 1990','Feb 1995','Feb 2000','Feb 2005','Feb 2010','Feb 2015')
+# showvals <- c('1960', '1965', '1970', '1975', '1980','1985','1990','1995','2000','2005','2010','2015')
+# CO2g <- plot_ly(CO2, x=~Date ,y=~CO2_levels, type='scatter', mode='lines',line = list(shape = 'linear', color="#576e2b", width= 2))
 # CO2g <- CO2g %>% layout(title='Global atmospheric CO2 levels (1958-2018)',
-#                         yaxis=list(title='CO2 levels (ppm)'))
+#                         xaxis=list(tickvals=datevals,ticktext=showvals),                          
+#                           yaxis=list(title='CO2 levels (ppm)'),
+#                         showlegend=FALSE)
+# CO2g <- CO2g %>% 
+#   add_segments(x = 'Feb 1958', xend = 'Feb 2018', y = 350, yend = 350,text='Healthy CO2 level',
+#                               line=list(width=2.5,dash='dash',color='#B5E550')) %>%
+#   add_segments(x = 'Feb 1958', xend = 'Feb 2018', y = 400, yend = 400, text='Dangerous CO2 level',
+#                line=list(width=2.5,dash='dash',color='#FC284A'))
+# CO2g <- CO2g %>% 
+#   add_text(x='Feb 1965',y=353,text='Healthy C02 level') 
+# CO2g <- CO2g %>% 
+#   add_text(x='Feb 1965',y=403,text='Dangerous C02 level')
 # CO2g
+#I don't know if I actually want to use this yet: Third CAUSE TAB graph: globally country per capita metric tons of fossil fuels emitted, still adjusting this plot stopping here Jan 12
+# ff_co2pc <- 
+#   ff_co2 %>% 
+#   rename('Per_Capita'='Per Capita') %>% 
+#   group_by(Year) 
+# 
+# percapg <- plot_ly(ff_co2pc, x=~Per_Capita, y=~Total_ff,text=~Country,type='scatter',mode='markers',marker = list(size =~Per_Capita, opacity = 0.5, color = 'rgb(255, 65, 54)'))
+# percapg <- percapg %>% layout(showlegend=FALSE)
+# percapg
 
-
-#Third CAUSE TAB graph: globally country per capita metric tons of fossil fuels emitted, still adjusting this plot stopping here Jan 12
-ff_co2pc <- 
-  ff_co2 %>% 
-  rename('Per_Capita'='Per Capita') %>% 
-  group_by(Year) 
-
-percapg <- plot_ly(ff_co2pc, x=~Per_Capita, y=~Total_ff,text=~Country,type='scatter',mode='markers',marker = list(size =~Per_Capita, opacity = 0.5, color = 'rgb(255, 65, 54)'))
-percapg <- percapg %>% layout(showlegend=FALSE)
-percapg
-
-# #This will be a donut graph showing the percentage each country is responsible for
+# #This will be a donut graph showing the percentage each country is responsible for, make two graphs: all countries w/ <2% lumped as 'other' and another where the smaller percentage countries are viewed closer
 # ff_co2 <-
 #   ff_co2 %>%
 #   rename('Bunker.fuel'='Bunker fuels (Not in Total)')
@@ -188,11 +203,49 @@ percapg
 #                             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
 # ff100g
 
-#Also would like to add interactivity where you can compare up to 3 countries
+#Causes: deforestation: embed a video (no interactivity) of a heatmap %forest land data set choropleth
+View(forest_area)
 
+
+#Effects: have a dropdown where they can take a look at each individual issue, Michael idea: Value box, on average on whatever year is chosen, on average in x year, sealevel rose x amount
+#What's in the value box can vary based on whatever you're looking at
 
 #Effects: Storms & Natural Disasters
-#Effects: Sea level rising
-#Effects: Temperature rising
+View(disaster)
+disaster %>% count(Year) %>% ggplot(aes(x=Year,y=n))+geom_line()
+#scattermapbox plotly: scatter plots over a map. Add slider to pick by Year, also allow to zoom in on one country (interactivity dropdown)
+
+
+
+
+
+
+#Effects: Sea level rising, current plot information works well visually, need to adjust colors 
+# sealevel <- 
+#   sealevel %>% 
+#   select(-`NOAA Adjusted Sea Level`) %>% 
+#   rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
+# output$seaplot <- renderPlotly({
+#   seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
+#                      line=list(color='transparent'),
+#                      showlegend=FALSE, name='Upper Error')
+#   seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
+#                                    fill='tonexty', fillcolor='rgba(0,100,80,0.2)', line=list(color='transparent'),
+#                                    showlegend=FALSE,name='Lower Error')  
+#   seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
+#                                    line=list(color='rgb(0,100,80)'),
+#                                    name='Average level rise')
+#   seaplot
+
+
+#Effects: Temperature rising (have this be a big number visualization)
+
+
+
+
+
+
+
+
 
 
