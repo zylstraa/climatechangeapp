@@ -74,8 +74,6 @@ ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 # Famine
 disaster <- read_csv('data/naturaldisasters.csv')
 
-#deforestation: CAUSES https://data.worldbank.org/indicator/AG.LND.FRST.ZS?view=chart
-forest_area <- read_csv('data/forestarea.csv')
 
 
 #Global temperature focus:
@@ -238,8 +236,24 @@ forest_area <- read_csv('data/forestarea.csv')
 #                               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
 # donut2g
 
+
+
+
 #Causes: deforestation: embed a video (no interactivity) of a heatmap %forest land data set choropleth
-View(forest_area)
+#deforestation: CAUSES https://data.worldbank.org/indicator/AG.LND.FRST.ZS?view=chart
+forest_area <- read_csv('data/forestarea.csv')
+
+
+#Have to add a letter onto the column names so that it can be input into plotly as a column name and not a number
+forest_area <-forest_area %>% 
+  dplyr::rename_all(function(x) paste0("Y", x)) %>% 
+  rename('CODE'='YCountry Code','Country'='YCountry Name')
+
+#plotting deforestation (saving the pngs to create a video)
+forestg <- plot_ly(forest_area, type='choropleth', locations=forest_area$CODE, z=forest_area$Y2017 , 
+                   text=forest_area$Country, colors="Greens")
+forestg
+
 
 
 #Effects: have a dropdown where they can take a look at each individual issue, Michael idea: Value box, on average on whatever year is chosen, on average in x year, sealevel rose x amount
