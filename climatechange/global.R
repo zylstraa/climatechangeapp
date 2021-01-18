@@ -20,6 +20,24 @@ CO2 <- read_csv('data/co2airlevels.csv')
 #National Fossil fuel emissions data source https://datahub.io/core/co2-fossil-by-nation#data
 ff_co2 <- read_csv('data/fossilfuelco2bycountry.csv')
 
+#deforestation: CAUSES https://data.worldbank.org/indicator/AG.LND.FRST.K2?view=chart
+forest_area <- read_csv('data/forest_area.csv')
+
+#country codes w/ continent list: https://datahub.io/JohnSnowLabs/country-and-continent-codes-list
+countrycodes <- read_csv('data/countrycodes.csv')
+
+#color palettes used:
+color1 <- c('#677c40','#788b55','#89996a','#9aa87f','#abb695','#bbc5aa', '#eef0e9')
+color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073', 
+            '#245749', '#296e5b','#2e856e','355b35',
+            '3b613b', '416740', '476d46', '4d734c', '537952', '598058','#569985','#78ad9c',
+            '158e93','00adb3','53bbbf','7cc9cc',
+            'e0f1f2','c0e4e5','9fd6d8',
+            '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9'
+)
+
+
+
 #Natural disasters source: https://public.emdat.be/data (containing:
 # Volcanic activity
 # Ash fall
@@ -222,14 +240,7 @@ disaster <- read_csv('data/naturaldisasters.csv')
 # donut1g
 # 
 # #plotting the 2nd donut graph
-color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073', 
-             '#245749', '#296e5b','#2e856e','355b35',
-             '3b613b', '416740', '476d46', '4d734c', '537952', '598058','#569985','#78ad9c',
-             '158e93','00adb3','53bbbf','7cc9cc',
-             'e0f1f2','c0e4e5','9fd6d8',
-             '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9'
-             )
-# 
+
 # donut2g <- donut2 %>% plot_ly(labels =~Country, values=~Total_ff,marker=list(colors=color2,line=list(color='#FFFFFF',width=1)))
 # donut2g <- donut2g %>% add_pie(hole=0.6)
 # donut2g <- donut2g %>% layout(title='CO2 fossil fuel emissions by country (in million metric tons)', showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
@@ -239,61 +250,49 @@ color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073',
 
 
 
-#Causes: deforestation: embed a video (no interactivity) of a heatmap %forest land data set choropleth
-#deforestation: CAUSES https://data.worldbank.org/indicator/AG.LND.FRST.ZS?view=chart
-forest_area <- read_csv('data/forest_area.csv')
 
-#country codes list to create sunburst map https://datahub.io/JohnSnowLabs/country-and-continent-codes-list
-countrycodes <- read_csv('data/countrycodes.csv')
 
 #Have to add a letter onto the column names so that it can be input into plotly as a column name and not a number
-forest_area <-forest_area %>% 
-  dplyr::rename_all(function(x) paste0("Y", x)) %>% 
-  rename('CODE'='YCountry Code','Country'='YCountry Name')
-
-
-#Sunburst chart route:
-countrycodes <- countrycodes %>% 
-  rename('CODE'='Three_Letter_Country_Code') %>% 
-  select('Continent_Name','Country_Name','CODE')
-
-forest_bycont <- right_join(countrycodes,forest_area, by='CODE') %>% 
-  group_by(Continent_Name) %>% 
-  mutate_if(is.numeric,replace_na,0) %>% 
-  summarise_if(is.numeric,funs(sum)) %>% 
-  head(-1) %>% 
-  pivot_longer(cols=Y1990:Y2016, names_to='Year',values_to='km_forest') %>% 
-  pivot_wider(names_from=Continent_Name,values_from=km_forest) %>% 
-  rename('North_America'='North America','South_America'='South America') 
-
-numbers <- '([0-9]{4})'
-
-forest_bycont$Year <- str_extract_all(forest_bycont$Year,numbers)
+# forest_area <-forest_area %>% 
+#   dplyr::rename_all(function(x) paste0("Y", x)) %>% 
+#   rename('CODE'='YCountry Code','Country'='YCountry Name')
+# 
+# countrycodes <- countrycodes %>% 
+#   rename('CODE'='Three_Letter_Country_Code') %>% 
+#   select('Continent_Name','Country_Name','CODE')
+# 
+# forest_bycont <- right_join(countrycodes,forest_area, by='CODE') %>% 
+#   group_by(Continent_Name) %>% 
+#   mutate_if(is.numeric,replace_na,0) %>% 
+#   summarise_if(is.numeric,funs(sum)) %>% 
+#   head(-1) %>% 
+#   pivot_longer(cols=Y1990:Y2016, names_to='Year',values_to='km_forest') %>% 
+#   pivot_wider(names_from=Continent_Name,values_from=km_forest) %>% 
+#   rename('North_America'='North America','South_America'='South America') 
+# 
+# numbers <- '([0-9]{4})'
+# 
+# forest_bycont$Year <- str_extract_all(forest_bycont$Year,numbers)
   
-Africa <- plot_ly(forest_bycont,type='scatter',mode='line', x=~Year, y=~Africa, name='Africa')
-Asia <- plot_ly(forest_bycont,type='scatter',mode='line', x=~Year, y=~Asia, name='Asia')
-Europe <- plot_ly(forest_bycont,type='scatter',mode='line', x=~Year, y=~Europe, name='Europe')
-NorthAm <- plot_ly(forest_bycont,type='scatter',mode='line', x=~Year, y=~North_America, name='North America')
-Oceania <- plot_ly(forest_bycont,type='scatter',mode='line', x=~Year, y=~Oceania, name='Oceania')
-SouthAm <- plot_ly(forest_bycont,type='scatter',mode='line', x=~Year, y=~South_America, name='South America')
-forestmap <- subplot(Africa,Asia,Europe,NorthAm,Oceania,SouthAm,nrows=6,shareX=TRUE)
-forestmap
+# Africa <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Africa, name='Africa',line=list(color='#bbc5aa',width=2))
+# Asia <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Asia, name='Asia',line=list(color='89996a',width=3, dash='dash'))
+# Europe <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Europe, name='Europe',line=list(color='abb695',width=3,dash='dot'))
+# NorthAm <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~North_America, name='North America',line=list(color='7cc9cc',width=2))
+# Oceania <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Oceania, name='Oceania',line=list(color='ddeae5',width=4))
+# SouthAm <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~South_America, name='South America',line=list(color='476d46',width=2))
+# forestmap <- subplot(Africa,Asia,Europe,NorthAm,Oceania,SouthAm,nrows=6,shareX=TRUE)
+# forestmap <- forestmap %>% layout(title='Area of forest in sq km (1990-2016)')
+# forestmap
 
+#Overall 1,324,449 square kilometers of forest were lost from 1990-2016
 
                      
-                     
-# #Choropleth map route: plotting deforestation (saving the pngs to create a video),possibly not using this
-# forestg <- plot_ly(forest_area, type='choropleth', locations=forest_area$CODE, z=forest_area$Y2016 , 
-#                    text=forest_area$Country, colors="Greens",zauto=FALSE,zmin=0,zmax=10000000,colorscale='Viridis',reversescale=TRUE)
-# forestg
-
 
 
 #Effects: have a dropdown where they can take a look at each individual issue, Michael idea: Value box, on average on whatever year is chosen, on average in x year, sealevel rose x amount
 #What's in the value box can vary based on whatever you're looking at
 
 #Effects: Storms & Natural Disasters
-View(disaster)
 disaster %>% count(Year) %>% ggplot(aes(x=Year,y=n))+geom_line()
 #scattermapbox plotly: scatter plots over a map. Add slider to pick by Year, alsoforest allow to zoom in on one country (interactivity dropdown)
 
