@@ -2,7 +2,6 @@ library(shiny)
 library(tidyverse)
 library(dismo)
 library(plotly)
-library(shinydashboard)
 
 #I'm not sure if I need to do this, however my RStudio keeps adjusting my working directory every time I open it.
 setwd("~/nss_projects/MidcourseProject/climatechangeapp/climatechange")
@@ -11,8 +10,6 @@ setwd("~/nss_projects/MidcourseProject/climatechangeapp/climatechange")
 global_temp <- read_csv('data/globaltempannual.csv')
 global_tempmonth <- read_csv('data/global_monthly_tempanom.csv')
 
-#Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level
-sealevel <- read_csv('data/epa-sea-level.csv')
 
 #Global CO2 levels in the air https://datahub.io/core/co2-ppm
 CO2 <- read_csv('data/co2airlevels.csv')
@@ -292,34 +289,56 @@ disaster <- read_csv('data/naturaldisasters.csv')
 #Effects: have a dropdown where they can take a look at each individual issue, Michael idea: Value box, on average on whatever year is chosen, on average in x year, sealevel rose x amount
 #What's in the value box can vary based on whatever you're looking at
 
-#Effects: Storms & Natural Disasters
-disaster %>% count(Year) %>% ggplot(aes(x=Year,y=n))+geom_line()
-#scattermapbox plotly: scatter plots over a map. Add slider to pick by Year, alsoforest allow to zoom in on one country (interactivity dropdown)
+#Effects: Storms & Natural Disasters https://public.emdat.be/data
+
+disaster <- read_csv('data/naturaldisasters.csv')
 
 
 
+flooding <- disaster %>% 
+  rename('Disaster_type'='Disaster Type') %>% 
+  filter(Disaster_type=='Flood') %>% 
+  count(Year) %>% 
+  filter(Year >= 1960)
 
+
+floodg <- plot_ly(flooding, x=~Year, y=~n, type='scatter',mode='lines',line=list(color='#96E6F3',width=4))
+floodg <- floodg %>%  add_trace(x = 2013, y = 9, marker = list(color = '#FE8373',size = 50,opacity = 0.2),showlegend = FALSE)
+floodg <- floodg %>% add_text(x=2013,y=5,text='Time of Drought',showlegend=FALSE)
+floodg <- floodg %>% layout(yaxis=list(title='Number of floods'),showlegend=FALSE)
+floodg
+
+
+#scattermapbox plotly: scatter plots over a map. Add slider to pick by Year, also forest allow to zoom in on one country (interactivity dropdown)
+
+
+#Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level, good info at: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
+sealevel <- read_csv('data/epa-sea-level.csv')
 
 
 #Effects: Sea level rising, current plot information works well visually, need to adjust colors 
-# sealevel <- 
-#   sealevel %>% 
-#   select(-`NOAA Adjusted Sea Level`) %>% 
-#   rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
-# output$seaplot <- renderPlotly({
-#   seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
-#                      line=list(color='transparent'),
-#                      showlegend=FALSE, name='Upper Error')
-#   seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
-#                                    fill='tonexty', fillcolor='rgba(0,100,80,0.2)', line=list(color='transparent'),
-#                                    showlegend=FALSE,name='Lower Error')  
-#   seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
-#                                    line=list(color='rgb(0,100,80)'),
-#                                    name='Average level rise')
-#   seaplot
+sealevel <-
+  sealevel %>%
+  select(-`NOAA Adjusted Sea Level`) %>%
+  rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
+
+  seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
+                     line=list(color='transparent'),
+                     showlegend=FALSE, name='Upper Error')
+  seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
+                                   fill='tonexty', fillcolor='BDE9EB', line=list(color='transparent'),
+                                   showlegend=FALSE,name='Lower Error')
+  seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
+                                   line=list(color='00ADB3'),
+                                   name='Average rise')
+  seaplot <- seaplot %>% layout(yaxis=list(title='Sea Level Rise (inches)'))
+  seaplot
 
 
-#Effects: Temperature rising (have this be a big number visualization)
+#Effects: Temperature rising (have this be a big number visualization) or an interactive heat map would be cool
+  
+
+#Effects: Species decline
 
 
 
