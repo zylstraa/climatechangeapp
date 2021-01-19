@@ -2,6 +2,9 @@ library(shiny)
 library(tidyverse)
 library(dismo)
 library(plotly)
+library(rnaturalearth)
+library(rgeos)
+library(sf)
 
 #I'm not sure if I need to do this, however my RStudio keeps adjusting my working directory every time I open it.
 setwd("~/nss_projects/MidcourseProject/climatechangeapp/climatechange")
@@ -30,8 +33,10 @@ color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073',
             '3b613b', '416740', '476d46', '4d734c', '537952', '598058','#569985','#78ad9c',
             '158e93','00adb3','53bbbf','7cc9cc',
             'e0f1f2','c0e4e5','9fd6d8',
-            '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9'
-)
+            '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9')
+
+#Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level, good info at: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
+sealevel <- read_csv('data/epa-sea-level.csv')
 
 
 
@@ -288,62 +293,112 @@ disaster <- read_csv('data/naturaldisasters.csv')
 
 #Effects: have a dropdown where they can take a look at each individual issue, Michael idea: Value box, on average on whatever year is chosen, on average in x year, sealevel rose x amount
 #What's in the value box can vary based on whatever you're looking at
-
-#Effects: Storms & Natural Disasters https://public.emdat.be/data
-
-disaster <- read_csv('data/naturaldisasters.csv')
-
-
-
-flooding <- disaster %>% 
-  rename('Disaster_type'='Disaster Type') %>% 
-  filter(Disaster_type=='Flood') %>% 
-  count(Year) %>% 
-  filter(Year >= 1960)
+#Temperature:
+global_tempmonth <- 
+  global_tempmonth %>% 
+  group_by(Date) %>% 
+  summarise(Anomoly_Avg=mean(Mean))
 
 
-floodg <- plot_ly(flooding, x=~Year, y=~n, type='scatter',mode='lines',line=list(color='#96E6F3',width=4))
-floodg <- floodg %>%  add_trace(x = 2013, y = 9, marker = list(color = '#FE8373',size = 50,opacity = 0.2),showlegend = FALSE)
-floodg <- floodg %>% add_text(x=2013,y=5,text='Time of Drought',showlegend=FALSE)
-floodg <- floodg %>% layout(yaxis=list(title='Number of floods'),showlegend=FALSE)
-floodg
+
+
+# 
+# flooding <- disaster %>% 
+#   rename('Disaster_type'='Disaster Type') %>% 
+#   filter(Disaster_type=='Flood') %>% 
+#   count(Year) %>% 
+#   filter(Year >= 1960)
+
+# 
+# floodg <- plot_ly(flooding, x=~Year, y=~n, type='scatter',mode='lines',line=list(color='#4794a1',width=3))
+# floodg <- floodg %>%  add_trace(x = 2013, y = 9, marker = list(color = '#FE8373',size = 50,opacity = 0.2),showlegend = FALSE)
+# floodg <- floodg %>% add_text(x=2013,y=5,text='Time of Drought',showlegend=FALSE)
+# floodg <- floodg %>% layout(yaxis=list(title='Number of floods'),showlegend=FALSE)
+# floodg
 
 
 #scattermapbox plotly: scatter plots over a map. Add slider to pick by Year, also forest allow to zoom in on one country (interactivity dropdown)
 
 
-#Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level, good info at: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
-sealevel <- read_csv('data/epa-sea-level.csv')
+
 
 
 #Effects: Sea level rising, current plot information works well visually, need to adjust colors 
-sealevel <-
-  sealevel %>%
-  select(-`NOAA Adjusted Sea Level`) %>%
-  rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
+# sealevel <-
+#   sealevel %>%
+#   select(-`NOAA Adjusted Sea Level`) %>%
+#   rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
 
-  seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
-                     line=list(color='transparent'),
-                     showlegend=FALSE, name='Upper Error')
-  seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
-                                   fill='tonexty', fillcolor='BDE9EB', line=list(color='transparent'),
-                                   showlegend=FALSE,name='Lower Error')
-  seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
-                                   line=list(color='00ADB3'),
-                                   name='Average rise')
-  seaplot <- seaplot %>% layout(yaxis=list(title='Sea Level Rise (inches)'))
-  seaplot
+  # seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
+  #                    line=list(color='transparent'),
+  #                    showlegend=FALSE, name='Upper Error')
+  # seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
+  #                                  fill='tonexty', fillcolor='BDE9EB', line=list(color='transparent'),
+  #                                  showlegend=FALSE,name='Lower Error')
+  # seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
+  #                                  line=list(color='00ADB3'),
+  #                                  name='Average rise')
+  # seaplot <- seaplot %>% layout(yaxis=list(title='Sea Level Rise (inches)'))
+  # seaplot
 
 
-#Effects: Temperature rising (have this be a big number visualization) or an interactive heat map would be cool
+#Effects: Temperature rising (have this be a big number visualization)
+  
+  
+#Effects: Natural disaster increases,unfinished
+#Effects: Storms & Natural Disasters https://public.emdat.be/data
+  
+disaster <- read_csv('data/naturaldisasters.csv')
+#ISO <- disaster %>% select(ISO,Country)
   
 
-#Effects: Species decline
+# disaster <- disaster %>% 
+#   rename('Disaster_type'='Disaster Type') %>% 
+#   select(Year,Disaster_type,Country,ISO,Continent) %>% 
+#   filter(Year>=1990)
+
+# disaster <- disaster %>% 
+#   filter(Year >= 1990) %>% 
+#   select(Year,Country,ISO) %>% 
+#   group_by(Year) %>% 
+#   add_count(Country,name='Number_disasters')
+# 
+# disaster <- disaster[!duplicated(disaster), ]
+
+
+ 
+
+# disasterg <- plot_ly(disaster,type='choropleth',scope='North America',locations=~ISO,z=~Number_disasters,
+#                      text=~Country,frame=~Year,zauto=FALSE,zmin=1,zmax=35,color='YlOrRd')
+# disasterg
+
+
+
+#Effects: Species decline (big number again?, another heat map would be a good call)
 
 
 
 
+#Action: renewable energy: 
+#hydroelectric % https://data.worldbank.org/indicator/EG.ELC.HYRO.ZS?end=2015&start=1960&view=chart
+#renewable non hydroelectric % https://data.worldbank.org/indicator/EG.ELC.RNWX.ZS?view=chart
 
+hydro <- read_csv('data/hydro.csv')
+nonhydro <- read_csv('data/nonhydro.csv')
+
+
+hydro <- hydro %>% 
+  rename('hydro'='2015','Country'='Country Name') %>% 
+  select(Country,hydro)
+
+nonhydro <- nonhydro %>% 
+  rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>% 
+  select(Country,nonhydro)
+
+
+energy <- full_join(hydro,nonhydro,by='Country') %>% 
+  mutate('Non_renew'=100-(hydro+nonhydro)) %>% 
+  drop_na()
 
 
 

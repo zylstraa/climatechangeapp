@@ -1,7 +1,7 @@
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-#Data CAUSES:
+#CAUSES data
     #Carbon produced by fossil fuels
     ff_co2 <-
         ff_co2 %>% 
@@ -132,48 +132,58 @@ shinyServer(function(input, output) {
         forestmap2 <- subplot(NorthAm,Oceania,SouthAm, nrows=3,shareX=TRUE)
         forestmap2
     })
-        
-#Data global temperature cleanup (causes), just kidding move this to effects
-    global_tempmonth <- 
-        global_tempmonth %>% 
-        group_by(Date) %>% 
-        summarise(Anomoly_Avg=mean(Mean))
-    
-#Plot global temperature plotting output (causes)
-    output$tempplot <- renderPlot({
-        tempplot <- global_tempmonth %>% 
-            ggplot(aes(x=Date, y=Anomoly_Avg))+geom_line()
-        tempplot
-    })
 
     
-#Data global sea levels cleanup (effects)
-    sealevel <- 
-        sealevel %>% 
-        select(-`NOAA Adjusted Sea Level`) %>% 
+#EFFECTS data:
+    #Sea level
+    sealevel <-
+        sealevel %>%
+        select(-`NOAA Adjusted Sea Level`) %>%
         rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
+    #Flooding
+    flooding <- disaster %>% 
+        rename('Disaster_type'='Disaster Type') %>% 
+        filter(Disaster_type=='Flood') %>% 
+        count(Year) %>% 
+        filter(Year >= 1960)
+    #Natural disasters
+    disaster <- disaster %>% 
+        filter(Year >= 1990) %>% 
+        select(Year,Country,ISO) %>% 
+        group_by(Year) %>% 
+        add_count(Country,name='Number_disasters')
     
-#Plot global sea levels (effects)
+    disaster <- disaster[!duplicated(disaster), ]
+    
+    
+#EFFECTS plot:
     output$seaplot <- renderPlotly({
         seaplot <- plot_ly(sealevel, x=~Year, y=~Upper_Error,type='scatter', mode='lines',
                            line=list(color='transparent'),
                            showlegend=FALSE, name='Upper Error')
         seaplot <- seaplot %>% add_trace(y=~Lower_Error, type='scatter', mode='lines',
-                                         fill='tonexty', fillcolor='rgba(0,100,80,0.2)', line=list(color='transparent'),
-                                         showlegend=FALSE,name='Lower Error')  
+                                         fill='tonexty', fillcolor='BDE9EB', line=list(color='transparent'),
+                                         showlegend=FALSE,name='Lower Error')
         seaplot <- seaplot %>% add_trace(y=~Avg_level_rise, type='scatter', mode='lines',
-                                         line=list(color='rgb(0,100,80)'),
-                                         name='Average level rise')
+                                         line=list(color='00ADB3'),
+                                         name='Average rise')
+        seaplot <- seaplot %>% layout(yaxis=list(title='Sea Level Rise (inches)'))
         seaplot
     })
-
-#Data national fossil fuel emissions cleanup (national)
-    country_choice <- ff_co2 %>% 
-        filter(Country=='UNITED STATES OF AMERICA')
     
-#Plot national fossil fuel emissions (national)
-    output$ffCO2 <- renderPlotly({
-        ff_emiss <- plot_ly(country_choice, x=~Year,y=~Total, mode='lines')
-        ff_emiss
+    output$floodg <- renderPlotly({
+        floodg <- plot_ly(flooding, x=~Year, y=~n, type='scatter',mode='lines',line=list(color='#4794a1',width=3))
+        floodg <- floodg %>%  add_trace(x = 2013, y = 9, marker = list(color = '#FE8373',size = 50,opacity = 0.2),showlegend = FALSE)
+        floodg <- floodg %>% add_text(x=2013,y=5,text='Time of Drought',showlegend=FALSE)
+        floodg <- floodg %>% layout(yaxis=list(title='Number of floods'),showlegend=FALSE)
+        floodg
     })
+    
+    output$disasterg <- renderPlotly({
+        disasterg <- plot_ly(disaster,type='choropleth',scope='North America',locations=~ISO,z=~Number_disasters,
+                             text=~Country,frame=~Year,zauto=FALSE,zmin=1,zmax=35,color='YlOrRd')
+        disasterg
+    })
+
+
 })
