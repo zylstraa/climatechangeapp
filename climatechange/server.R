@@ -186,4 +186,36 @@ shinyServer(function(input, output) {
     })
 
 
+    
+#ACTION data:
+    hydro <- hydro %>% 
+        rename('hydro'='2015','Country'='Country Name') %>% 
+        select(Country,hydro)
+    
+    nonhydro <- nonhydro %>% 
+        rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>% 
+        select(Country,nonhydro)
+    
+    
+    energy <- full_join(hydro,nonhydro,by='Country') %>% 
+        mutate('nonrenewable'=100-(hydro+nonhydro)) %>% 
+        drop_na()
+    
+#ACTION reactive:
+    countryval <- reactive({
+        input$country
+    })
+    
+#ACTION plot:
+    output$energyg <- renderPlotly({
+        energyd <- energy %>% 
+            filter(Country==input$country) %>% 
+            pivot_longer(cols=c(hydro,nonhydro,Non_renew),names_to='Energy_type')
+        
+        energyg <- plot_ly(energyd, type='pie',labels=~Energy_type,values=~value, 
+                           marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
+        energyg  
+    })
+
+    
 })

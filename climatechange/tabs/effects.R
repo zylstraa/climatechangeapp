@@ -3,7 +3,7 @@ effects <-
            fluidRow(
              column(6,
                     tags$div(
-                      (HTML('<h4 class="plotTitle">Sea Level Rise(</h4>')),
+                      (HTML('<h4 class="plotTitle">Sea Level Rise</h4>')),
                       plotlyOutput('seaplot'),
                     )
              ),

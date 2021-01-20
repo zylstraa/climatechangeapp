@@ -34,9 +34,16 @@ color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073',
             '158e93','00adb3','53bbbf','7cc9cc',
             'e0f1f2','c0e4e5','9fd6d8',
             '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9')
+color3 <- c('c7e9eb','9aa87f','eef0e9')
 
 #Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level, good info at: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
 sealevel <- read_csv('data/epa-sea-level.csv')
+
+#hydroelectric % https://data.worldbank.org/indicator/EG.ELC.HYRO.ZS?end=2015&start=1960&view=chart
+#renewable non hydroelectric % https://data.worldbank.org/indicator/EG.ELC.RNWX.ZS?view=chart
+
+hydro <- read_csv('data/hydro.csv')
+nonhydro <- read_csv('data/nonhydro.csv')
 
 
 
@@ -92,8 +99,9 @@ sealevel <- read_csv('data/epa-sea-level.csv')
 # 
 # Drought
 # Famine
-disaster <- read_csv('data/naturaldisasters.csv')
+#Effects: Storms & Natural Disasters https://public.emdat.be/data
 
+disaster <- read_csv('data/naturaldisasters.csv')
 
 
 #Global temperature focus:
@@ -346,9 +354,7 @@ global_tempmonth <-
   
   
 #Effects: Natural disaster increases,unfinished
-#Effects: Storms & Natural Disasters https://public.emdat.be/data
-  
-disaster <- read_csv('data/naturaldisasters.csv')
+
 #ISO <- disaster %>% select(ISO,Country)
   
 
@@ -380,27 +386,31 @@ disaster <- read_csv('data/naturaldisasters.csv')
 
 
 #Action: renewable energy: 
-#hydroelectric % https://data.worldbank.org/indicator/EG.ELC.HYRO.ZS?end=2015&start=1960&view=chart
-#renewable non hydroelectric % https://data.worldbank.org/indicator/EG.ELC.RNWX.ZS?view=chart
-
-hydro <- read_csv('data/hydro.csv')
-nonhydro <- read_csv('data/nonhydro.csv')
 
 
-hydro <- hydro %>% 
-  rename('hydro'='2015','Country'='Country Name') %>% 
-  select(Country,hydro)
 
-nonhydro <- nonhydro %>% 
-  rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>% 
-  select(Country,nonhydro)
+# hydro <- hydro %>% 
+#   rename('hydro'='2015','Country'='Country Name') %>% 
+#   select(Country,hydro)
+# 
+# nonhydro <- nonhydro %>% 
+#   rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>% 
+#   select(Country,nonhydro)
+# 
+# 
+# energy <- full_join(hydro,nonhydro,by='Country') %>% 
+#   mutate('nonrenewable'=100-(hydro+nonhydro)) %>% 
+#   drop_na()
 
 
-energy <- full_join(hydro,nonhydro,by='Country') %>% 
-  mutate('Non_renew'=100-(hydro+nonhydro)) %>% 
-  drop_na()
-
-
+# energyd <- energy %>% 
+#   filter(Country=='Austria') %>% 
+#   pivot_longer(cols=c(hydro,nonhydro,Non_renew),names_to='Energy_type')
+# 
+# energyg <- plot_ly(energyd, type='pie',labels=~Energy_type,values=~value, 
+#                    marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
+# energyg  
+  
 
 
 
