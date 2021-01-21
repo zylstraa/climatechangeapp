@@ -3,9 +3,9 @@ shinyServer(function(input, output) {
 
 #CAUSES data
     #Carbon produced by fossil fuels
-    ff_co2 <-
-        ff_co2 %>% 
+    ff_co2 <- ff_co2 %>% 
         rename('Bunker.fuel'='Bunker fuels (Not in Total)')
+    
     ff_co2 <- ff_co2 %>% 
         mutate(Total_ff = Total+Bunker.fuel)
     
@@ -76,11 +76,13 @@ shinyServer(function(input, output) {
     
 #Plot CAUSES:
     output$globalffg <- renderPlotly({
+
         globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
                              line = list(shape = 'linear', color="#455E14", width= 4))
         globalffg <- globalffg %>% layout(xaxis = list(title = "Year"),
                                           yaxis = list (title = "Million metric tons of Carbon"))
         globalffg
+        
     })
     
     output$CO2g <- renderPlotly({
@@ -100,8 +102,7 @@ shinyServer(function(input, output) {
         CO2g
     })
     
-    
-    output$donut1 <- renderPlotly({
+    output$donut1g <- renderPlotly({
         donut1g <- donut1 %>% plot_ly(labels =~Country, values=~Total_ff, marker=list(colors=color1,line=list(color='#FFFFFF',width=1)))
         donut1g <- donut1g %>% add_pie(hole=0.6)
         donut1g <- donut1g %>% layout(showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
@@ -109,12 +110,14 @@ shinyServer(function(input, output) {
         donut1g
     })
     
-    output$donut2 <- renderPlotly({
+    output$donut2g <- renderPlotly({
+
         donut2g <- donut2 %>% plot_ly(labels =~Country, values=~Total_ff,marker=list(colors=color2,line=list(color='#FFFFFF',width=1)))
         donut2g <- donut2g %>% add_pie(hole=0.6)
         donut2g <- donut2g %>% layout(showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
         donut2g
+        
     })
     
     output$forest1 <- renderPlotly({
@@ -188,34 +191,34 @@ shinyServer(function(input, output) {
 
     
 #ACTION data:
-    hydro <- hydro %>% 
-        rename('hydro'='2015','Country'='Country Name') %>% 
+    hydro <- hydro %>%
+        rename('hydro'='2015','Country'='Country Name') %>%
         select(Country,hydro)
-    
-    nonhydro <- nonhydro %>% 
-        rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>% 
+
+    nonhydro <- nonhydro %>%
+        rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>%
         select(Country,nonhydro)
-    
-    
-    energy <- full_join(hydro,nonhydro,by='Country') %>% 
-        mutate('nonrenewable'=100-(hydro+nonhydro)) %>% 
+
+
+    energy <- full_join(hydro,nonhydro,by='Country') %>%
+        mutate('nonrenewable'=100-(hydro+nonhydro)) %>%
         drop_na()
-    
+
 #ACTION reactive:
-    countryval <- reactive({
-        input$country
-    })
-    
+  
+
+
 #ACTION plot:
-    output$energyg <- renderPlotly({
-        energyd <- energy %>% 
-            filter(Country==input$country) %>% 
-            pivot_longer(cols=c(hydro,nonhydro,Non_renew),names_to='Energy_type')
-        
-        energyg <- plot_ly(energyd, type='pie',labels=~Energy_type,values=~value, 
+    output$energy1 <- renderPlotly({
+        energyd <- reactive({
+            energy %>%
+                filter(Country==input$Country1) %>%
+                pivot_longer(cols=c(hydro,nonhydro,Non_renew),names_to='Energy_type')
+        })
+        energyg <- plot_ly(energyd, type='pie',labels=~Energy_type,values=~value,
                            marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
-        energyg  
+        energyg
     })
 
-    
-})
+
+ })

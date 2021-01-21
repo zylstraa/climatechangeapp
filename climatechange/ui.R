@@ -17,7 +17,7 @@ shinyUI(
                home,
                causes,
                effects,
-               action,
+               #action,
                selected=home
         )
     )
