@@ -387,30 +387,24 @@ global_tempmonth <-
 
 #Action: renewable energy: 
 
-
-
-# hydro <- hydro %>% 
-#   rename('hydro'='2015','Country'='Country Name') %>% 
+# hydro <- hydro %>%
+#   rename('hydro'='2015','Country'='Country Name') %>%
 #   select(Country,hydro)
 # 
-# nonhydro <- nonhydro %>% 
-#   rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>% 
+# nonhydro <- nonhydro %>%
+#   rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>%
 #   select(Country,nonhydro)
 # 
 # 
-# energy <- full_join(hydro,nonhydro,by='Country') %>% 
-#   mutate('nonrenewable'=100-(hydro+nonhydro)) %>% 
+# energy <- full_join(hydro,nonhydro,by='Country') %>%
+#   mutate('nonrenewable'=100-(hydro+nonhydro)) %>%
 #   drop_na()
-
-
-# energyd <- energy %>% 
-#   filter(Country=='Austria') %>% 
-#   pivot_longer(cols=c(hydro,nonhydro,Non_renew),names_to='Energy_type')
+#   
+# energyd1 <- energy %>%
+#   filter(Country=='Australia') %>%
+#   pivot_longer(cols=c(hydro,nonhydro,nonrenewable),names_to='Energy_type')
 # 
-# energyg <- plot_ly(energyd, type='pie',labels=~Energy_type,values=~value, 
+# energyg <- plot_ly(energyd1, type='pie',labels=~Energy_type,values=~value,
 #                    marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
-# energyg  
-  
-
-
+# energyg
 

@@ -205,17 +205,15 @@ shinyServer(function(input, output) {
         drop_na()
 
 #ACTION reactive:
-  
-
+    energyd1 <- reactive({
+        energyd1 <- energy %>%
+            filter(Country==input$Country1) %>%
+            pivot_longer(cols=c(hydro,nonhydro,nonrenewable),names_to='Energy_type')
+    }) 
 
 #ACTION plot:
     output$energy1 <- renderPlotly({
-        energyd <- reactive({
-            energy %>%
-                filter(Country==input$Country1) %>%
-                pivot_longer(cols=c(hydro,nonhydro,Non_renew),names_to='Energy_type')
-        })
-        energyg <- plot_ly(energyd, type='pie',labels=~Energy_type,values=~value,
+        energyg <- plot_ly(energyd1(), type='pie',labels=~Energy_type,values=~value,
                            marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
         energyg
     })
