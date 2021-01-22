@@ -3,7 +3,28 @@ causes <-
            sidebarLayout(
              sidebarPanel(
                selectInput('cause',"What data would you like to see?",
-                           list('CO2 emissions globally','CO2 emissions by country','Deforestation'))
+                           list('CO2 emissions globally','CO2 emissions by country','Deforestation')),
+               br(rows=3),
+               h3('Sources'),
+               br(),
+               conditionalPanel(
+                 condition = "input.cause == 'CO2 emissions globally'",
+                 fluidRow(
+                   img(src = "images/cdiac.png", height=90,width=325)
+                 )
+               ),
+               conditionalPanel(
+                 condition = "input.cause == 'CO2 emissions by country'",
+                 fluidRow(
+                   img(src = "images/cdiac.png", height=90,width=325)
+                 )
+               ),
+               conditionalPanel(
+                 condition = "input.cause == 'Deforestation'",
+                 fluidRow(
+                   img(src = "images/deforestation.png", height=150,width=152)
+                 )
+               )
              ),
              mainPanel(
                conditionalPanel(
@@ -60,3 +81,4 @@ causes <-
              )
            )
   )
+

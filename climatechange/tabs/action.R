@@ -9,11 +9,15 @@ action <-
                selectInput('Country3','Pick a Country',
                            energy$Country)),
              mainPanel(
-               plotlyOutput('energy1'),
-               plotlyOutput('energy2'),
-               plotlyOutput('energy3')
+               fluidRow(
+                column(width=4,
+                  plotlyOutput('energy1')),
+               column(width=4,
+                  plotlyOutput('energy2')),
+               column(width=4,
+                  plotlyOutput('energy3'))
              )
-           
+             )
            
            )
   )
