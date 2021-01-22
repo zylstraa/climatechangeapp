@@ -47,20 +47,13 @@ shinyServer(function(input, output) {
         
     })
     
-    output$forest1 <- renderPlotly({
-        Africa <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Africa, name='Africa',line=list(color='#bbc5aa',width=2))
-        Asia <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Asia, name='Asia',line=list(color='89996a',width=3, dash='dash'))
-        Europe <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Europe, name='Europe',line=list(color='abb695',width=3,dash='dot'))
-        forestmap1 <- subplot(Africa,Asia,Europe,nrows=3,shareX=TRUE)
-        forestmap1
-    })
-    
-    output$forest2 <- renderPlotly({
-        NorthAm <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~North_America, name='North America',line=list(color='7cc9cc',width=2))
-        Oceania <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~Oceania, name='Oceania',line=list(color='ddeae5',width=4))
-        SouthAm <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~South_America, name='South America',line=list(color='476d46',width=2))
-        forestmap2 <- subplot(NorthAm,Oceania,SouthAm, nrows=3,shareX=TRUE)
-        forestmap2
+    output$forestg <- renderPlotly({
+        forestg <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~North_America, name='North America',line=list(color='7cc9cc',width=2))
+        forestg <- forestg %>% add_trace(y=~Oceania, name='Oceania',line=list(color='ddeae5',width=4))
+        forestg <- forestg %>% add_trace(y=~South_America, name='South America',line=list(color='476d46',width=2))
+        forestg <- forestg %>% add_trace(y=~Africa, name='Africa',line=list(color='#bbc5aa',width=2))
+        forestg <- forestg %>% add_trace(y=~Europe, name='Europe',line=list(color='abb695',width=3,dash='dot'))
+        forestg
     })
 
     

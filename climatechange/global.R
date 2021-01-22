@@ -581,3 +581,14 @@ plantg <- plot_ly(plant,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,
                  colorscale='YlOrRd',reversescale=TRUE)
 plantg <- plantg %>% colorbar(title='Threatened Species')
 plantg
+
+
+
+
+
+forestg <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~North_America, name='North America',line=list(color='7cc9cc',width=2))
+forestg <- forestg %>% add_trace(y=~Oceania, name='Oceania',line=list(color='ddeae5',width=4))
+forestg <- forestg %>% add_trace(y=~South_America, name='South America',line=list(color='476d46',width=2))
+forestg <- forestg %>% add_trace(y=~Africa, name='Africa',line=list(color='#bbc5aa',width=2))
+forestg <- forestg %>% add_trace(y=~Europe, name='Europe',line=list(color='abb695',width=3,dash='dot'))
+forestg

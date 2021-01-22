@@ -10,13 +10,16 @@ causes <-
                conditionalPanel(
                  condition = "input.cause == 'CO2 emissions globally'",
                  fluidRow(
-                   img(src = "images/cdiac.png", height=90,width=325)
+                   tags$a(img(src = "images/noaa.png", height=90,width=325),href='https://www.esrl.noaa.gov/gmd/ccgg/trends/global.html')
+                 ),
+                 fluidRow(
+                   tags$a(img(src = "images/cdiac.png", height=90,width=325),href='https://cdiac.ess-dive.lbl.gov/')
                  )
                ),
                conditionalPanel(
                  condition = "input.cause == 'CO2 emissions by country'",
                  fluidRow(
-                   img(src = "images/cdiac.png", height=90,width=325)
+                   tags$a(img(src = "images/cdiac.png", height=90,width=325),href='https://cdiac.ess-dive.lbl.gov/')
                  )
                ),
                conditionalPanel(
@@ -65,16 +68,10 @@ causes <-
                conditionalPanel(
                  condition = "input.cause == 'Deforestation'",
                fluidRow(
-                 column(6,
+                 column(12,
                         tags$div(
                           (HTML('<h4 class="plotTitle">Forest Area by Continent in sq km (1990-2016)')),
-                          plotlyOutput('forest1')
-                        )
-                 ),
-                 column(6,
-                        tags$div(
-                          (HTML('<h4 class="plotTitle">Forest Area by Continent in sq km (1990-2016)')),
-                          plotlyOutput('forest2')
+                          plotlyOutput('forestg')
                         )
                  )
                )
