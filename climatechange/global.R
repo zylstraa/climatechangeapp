@@ -36,7 +36,7 @@ color2 <- c('#101a17','#182d27','#1e4237','18383a','1b5356','1b7073',
             '#9ac1b4','#bbd6cc', '#ddeae5','#eef0e9', '#E7E8E9')
 color3 <- c('c7e9eb','9aa87f','eef0e9')
 
-#Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level, good info at: https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level
+#Global sea levels https://datahub.io/core/sea-level-rise#resource-epa-sea-level
 sealevel <- read_csv('data/epa-sea-level.csv')
 
 #hydroelectric % https://data.worldbank.org/indicator/EG.ELC.HYRO.ZS?end=2015&start=1960&view=chart
@@ -585,10 +585,3 @@ plantg
 
 
 
-
-forestg <- plot_ly(forest_bycont,type='scatter',mode='lines', x=~Year, y=~North_America, name='North America',line=list(color='7cc9cc',width=2))
-forestg <- forestg %>% add_trace(y=~Oceania, name='Oceania',line=list(color='ddeae5',width=4))
-forestg <- forestg %>% add_trace(y=~South_America, name='South America',line=list(color='476d46',width=2))
-forestg <- forestg %>% add_trace(y=~Africa, name='Africa',line=list(color='#bbc5aa',width=2))
-forestg <- forestg %>% add_trace(y=~Europe, name='Europe',line=list(color='abb695',width=3,dash='dot'))
-forestg

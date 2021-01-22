@@ -3,7 +3,31 @@ effects <-
            sidebarLayout(
              sidebarPanel(               
                selectInput('effect',"What data would you like to see?",
-                           list('Sea level & Flooding','Natural Disasters','Threatened Species'))
+                           list('Sea level & Flooding','Natural Disasters','Threatened Species')),
+               br(rows=3),
+               h3('Sources'),
+               br(),
+               conditionalPanel(
+                 condition = "input.effect == 'Sea level & Flooding'",
+                 fluidRow(
+                   tags$a(img(src = "images/epa.png", height=90,width=325),href='https://www.epa.gov/climate-indicators/climate-change-indicators-sea-level')
+                 ),
+                 fluidRow(
+                   tags$a(img(src = "images/emdat.png", height=90,width=325),href='https://www.emdat.be/')
+                 )
+               ),
+               conditionalPanel(
+                 condition = "input.effect == 'Natural Disasters'",
+                 fluidRow(
+                   tags$a(img(src = "images/emdat.png", height=90,width=325),href='https://www.emdat.be/')
+                 )
+               ),
+               conditionalPanel(
+                 condition = "input.effect == 'Threatened Species'",
+                 fluidRow(
+                   tags$a(img(src = "images/emdat.png", height=90,width=325),href='https://www.emdat.be/')
+             )
+             )
              ),
            mainPanel(
              conditionalPanel(
