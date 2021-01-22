@@ -386,7 +386,15 @@ global_tempmonth <-
 
 
 #Action: renewable energy: 
-
+# nope <- c('Fragile and conflict affected situations','Central Europe and the Baltics','East Asia & Pacific (excluding high income)','Early-demographic dividend',
+#           'East Asia & Pacific','Europe & Central Asia (excluding high income)','Europe & Central Asia','Euro area','European Union','Fragile and conflict affected situations',
+#           'High income','Heavily indebted poor countries (HIPC)','IBRD only','IDA & IBRD total','IDA total','IDA blend','IDA only','Latin America & Caribbean (excluding high income)',
+#           'Latin America & Caribbean','Least developed countries: UN classification','Low income','Lower middle income','Low & middle income','Late-demographic dividend',
+#           'Middle East & North Africa','Middle income','Middle East & North Africa (excluding high income)','North America','OECD members','Other small states','Pre-demographic dividend',
+#           'Post-demographic dividend', 'South Asia','Sub-Saharan Africa (excluding high income)','Sub-Saharan Africa','Small states','East Asia & Pacific (IDA & IBRD countries)',
+#           'Europe & Central Asia (IDA & IBRD countries)','Latin America & the Caribbean (IDA & IBRD countries)','Middle East & North Africa (IDA & IBRD countries)',
+#           'South Asia (IDA & IBRD)','Sub-Saharan Africa (IDA & IBRD countries)','Upper middle income')
+# 
 # hydro <- hydro %>%
 #   rename('hydro'='2015','Country'='Country Name') %>%
 #   select(Country,hydro)
@@ -397,9 +405,13 @@ global_tempmonth <-
 # 
 # 
 # energy <- full_join(hydro,nonhydro,by='Country') %>%
-#   mutate('nonrenewable'=100-(hydro+nonhydro)) %>%
-#   drop_na()
+#    mutate('nonrenewable'=100-(hydro+nonhydro)) %>% 
+#   filter(Country != nope)
 #   
+# newDF <- energy[ ,which((names(energy$Country) %in% nope)==FALSE)] 
+# 
+# View(energy)
+# 
 # energyd1 <- energy %>%
 #   filter(Country=='Australia') %>%
 #   pivot_longer(cols=c(hydro,nonhydro,nonrenewable),names_to='Energy_type')
@@ -407,4 +419,6 @@ global_tempmonth <-
 # energyg <- plot_ly(energyd1, type='pie',labels=~Energy_type,values=~value,
 #                    marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
 # energyg
+
+
 
