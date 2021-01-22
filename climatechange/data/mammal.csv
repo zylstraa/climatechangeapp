@@ -1,0 +1,265 @@
+Country Name,Country Code,Mammal
+Aruba,ABW,2
+Afghanistan,AFG,11
+Angola,AGO,18
+Albania,ALB,3
+Andorra,AND,2
+Arab World,ARB,248
+United Arab Emirates,ARE,8
+Argentina,ARG,38
+Armenia,ARM,9
+American Samoa,ASM,1
+Antigua and Barbuda,ATG,2
+Australia,AUS,63
+Austria,AUT,3
+Azerbaijan,AZE,8
+Burundi,BDI,14
+Belgium,BEL,2
+Benin,BEN,13
+Burkina Faso,BFA,9
+Bangladesh,BGD,37
+Bulgaria,BGR,8
+Bahrain,BHR,3
+"Bahamas, The",BHS,5
+Bosnia and Herzegovina,BIH,4
+Belarus,BLR,4
+Belize,BLZ,10
+Bermuda,BMU,4
+Bolivia,BOL,21
+Brazil,BRA,80
+Barbados,BRB,3
+Brunei Darussalam,BRN,33
+Bhutan,BTN,25
+Botswana,BWA,11
+Central African Republic,CAF,16
+Canada,CAN,18
+Central Europe and the Baltics,CEB,50
+Switzerland,CHE,3
+Channel Islands,CHI,
+Chile,CHL,19
+China,CHN,73
+Cote d'Ivoire,CIV,31
+Cameroon,CMR,46
+"Congo, Dem. Rep.",COD,32
+"Congo, Rep.",COG,15
+Colombia,COL,58
+Comoros,COM,5
+Cabo Verde,CPV,4
+Costa Rica,CRI,11
+Caribbean small states,CSS,61
+Cuba,CUB,10
+Curacao,CUW,3
+Cayman Islands,CYM,1
+Cyprus,CYP,6
+Czech Republic,CZE,3
+Germany,DEU,5
+Djibouti,DJI,11
+Dominica,DMA,3
+Denmark,DNK,2
+Dominican Republic,DOM,7
+Algeria,DZA,14
+East Asia & Pacific (excluding high income),EAP,737
+Early-demographic dividend,EAR,1406
+East Asia & Pacific,EAS,934
+Europe & Central Asia (excluding high income),ECA,179
+Europe & Central Asia,ECS,350
+Ecuador,ECU,47
+"Egypt, Arab Rep.",EGY,18
+Euro area,EMU,99
+Eritrea,ERI,15
+Spain,ESP,17
+Estonia,EST,1
+Ethiopia,ETH,34
+European Union,EUU,138
+Fragile and conflict affected situations,FCS,628
+Finland,FIN,2
+Fiji,FJI,7
+France,FRA,9
+Faroe Islands,FRO,4
+"Micronesia, Fed. Sts.",FSM,5
+Gabon,GAB,18
+United Kingdom,GBR,5
+Georgia,GEO,9
+Ghana,GHA,21
+Gibraltar,GIB,3
+Guinea,GIN,30
+"Gambia, The",GMB,10
+Guinea-Bissau,GNB,14
+Equatorial Guinea,GNQ,23
+Greece,GRC,10
+Grenada,GRD,3
+Greenland,GRL,9
+Guatemala,GTM,15
+Guam,GUM,3
+Guyana,GUY,11
+High income,HIC,579
+"Hong Kong SAR, China",HKG,4
+Honduras,HND,8
+Heavily indebted poor countries (HIPC),HPC,799
+Croatia,HRV,9
+Haiti,HTI,4
+Hungary,HUN,3
+IBRD only,IBD,1627
+IDA & IBRD total,IBT,2911
+IDA total,IDA,1284
+IDA blend,IDB,234
+Indonesia,IDN,191
+IDA only,IDX,1050
+Isle of Man,IMN,0
+India,IND,93
+Not classified,INX,
+Ireland,IRL,5
+"Iran, Islamic Rep.",IRN,18
+Iraq,IRQ,13
+Iceland,ISL,6
+Israel,ISR,15
+Italy,ITA,8
+Jamaica,JAM,7
+Jordan,JOR,13
+Japan,JPN,29
+Kazakhstan,KAZ,16
+Kenya,KEN,30
+Kyrgyz Republic,KGZ,5
+Cambodia,KHM,39
+Kiribati,KIR,2
+St. Kitts and Nevis,KNA,2
+"Korea, Rep.",KOR,12
+Kuwait,KWT,7
+Latin America & Caribbean (excluding high income),LAC,553
+Lao PDR,LAO,45
+Lebanon,LBN,10
+Liberia,LBR,24
+Libya,LBY,10
+St. Lucia,LCA,2
+Latin America & Caribbean,LCN,629
+Least developed countries: UN classification,LDC,957
+Low income,LIC,582
+Liechtenstein,LIE,0
+Sri Lanka,LKA,30
+Lower middle income,LMC,1040
+Low & middle income,LMY,2843
+Lesotho,LSO,4
+Late-demographic dividend,LTE,800
+Lithuania,LTU,2
+Luxembourg,LUX,0
+Latvia,LVA,1
+"Macao SAR, China",MAC,0
+St. Martin (French part),MAF,2
+Morocco,MAR,18
+Monaco,MCO,3
+Moldova,MDA,4
+Madagascar,MDG,121
+Maldives,MDV,2
+Middle East & North Africa,MEA,228
+Mexico,MEX,96
+Marshall Islands,MHL,1
+Middle income,MIC,2261
+North Macedonia,MKD,6
+Mali,MLI,14
+Malta,MLT,2
+Myanmar,MMR,49
+Middle East & North Africa (excluding high income),MNA,168
+Montenegro,MNE,6
+Mongolia,MNG,11
+Northern Mariana Islands,MNP,3
+Mozambique,MOZ,17
+Mauritania,MRT,18
+Mauritius,MUS,7
+Malawi,MWI,10
+Malaysia,MYS,71
+North America,NAC,62
+Namibia,NAM,15
+New Caledonia,NCL,9
+Niger,NER,13
+Nigeria,NGA,31
+Nicaragua,NIC,7
+Netherlands,NLD,3
+Norway,NOR,8
+Nepal,NPL,29
+Nauru,NRU,2
+New Zealand,NZL,9
+OECD members,OED,504
+Oman,OMN,10
+Other small states,OSS,234
+Pakistan,PAK,25
+Panama,PAN,17
+Peru,PER,53
+Philippines,PHL,38
+Palau,PLW,4
+Papua New Guinea,PNG,41
+Poland,POL,4
+Pre-demographic dividend,PRE,799
+Puerto Rico,PRI,2
+"Korea, Dem. People’s Rep.",PRK,10
+Portugal,PRT,13
+Paraguay,PRY,10
+West Bank and Gaza,PSE,4
+Pacific island small states,PSS,54
+Post-demographic dividend,PST,347
+French Polynesia,PYF,0
+Qatar,QAT,4
+Romania,ROU,9
+Russian Federation,RUS,34
+Rwanda,RWA,24
+South Asia,SAS,252
+Saudi Arabia,SAU,11
+Sudan,SDN,16
+Senegal,SEN,19
+Singapore,SGP,14
+Solomon Islands,SLB,19
+Sierra Leone,SLE,22
+El Salvador,SLV,6
+San Marino,SMR,0
+Somalia,SOM,16
+Serbia,SRB,6
+Sub-Saharan Africa (excluding high income),SSA,954
+South Sudan,SSD,14
+Sub-Saharan Africa,SSF,967
+Small states,SST,349
+Sao Tome and Principe,STP,4
+Suriname,SUR,9
+Slovak Republic,SVK,4
+Slovenia,SVN,6
+Sweden,SWE,1
+Eswatini,SWZ,9
+Sint Maarten (Dutch part),SXM,2
+Seychelles,SYC,6
+Syrian Arab Republic,SYR,14
+Turks and Caicos Islands,TCA,2
+Chad,TCD,16
+East Asia & Pacific (IDA & IBRD countries),TEA,732
+Europe & Central Asia (IDA & IBRD countries),TEC,201
+Togo,TGO,13
+Thailand,THA,59
+Tajikistan,TJK,7
+Turkmenistan,TKM,10
+Latin America & the Caribbean (IDA & IBRD countries),TLA,595
+Timor-Leste,TLS,5
+Middle East & North Africa (IDA & IBRD countries),TMN,164
+Tonga,TON,2
+South Asia (IDA & IBRD),TSA,252
+Sub-Saharan Africa (IDA & IBRD countries),TSS,967
+Trinidad and Tobago,TTO,2
+Tunisia,TUN,14
+Turkey,TUR,19
+Tuvalu,TUV,2
+Tanzania,TZA,41
+Uganda,UGA,31
+Ukraine,UKR,11
+Upper middle income,UMC,1221
+Uruguay,URY,10
+United States,USA,40
+Uzbekistan,UZB,10
+St. Vincent and the Grenadines,VCT,2
+"Venezuela, RB",VEN,35
+British Virgin Islands,VGB,1
+Virgin Islands (U.S.),VIR,1
+Vietnam,VNM,56
+Vanuatu,VUT,8
+World,WLD,
+Samoa,WSM,2
+Kosovo,XKX,
+"Yemen, Rep.",YEM,11
+South Africa,ZAF,30
+Zambia,ZMB,13
+Zimbabwe,ZWE,10

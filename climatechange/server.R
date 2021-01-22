@@ -1,80 +1,7 @@
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-
-#CAUSES data
-    #Carbon produced by fossil fuels
-    ff_co2 <- ff_co2 %>% 
-        rename('Bunker.fuel'='Bunker fuels (Not in Total)')
     
-    ff_co2 <- ff_co2 %>% 
-        mutate(Total_ff = Total+Bunker.fuel)
-    
-    global_ff <- 
-        ff_co2 %>% 
-        filter(Year>=1900) %>% 
-        group_by(Year) %>% 
-        summarise(Total = sum(Total_ff))
-
-    
-    #Global CO2 emissions by country
-    CO2 <- CO2 %>%
-        select(Date,Trend) %>%
-        rename('CO2_levels'='Trend')
-    CO2$Date <- as.POSIXct(CO2$Date, format="%Y/%m/%d")
-    CO2$Date <- format(CO2$Date, format="%b %Y")
-    CO2$Date <- factor(CO2$Date, levels = CO2[["Date"]])
-    datevals <- c('Feb 1960','Feb 1965','Feb 1970','Feb 1975','Feb 1980','Feb 1985','Feb 1990','Feb 1995','Feb 2000','Feb 2005','Feb 2010','Feb 2015')
-    showvals <- c('1960', '1965', '1970', '1975', '1980','1985','1990','1995','2000','2005','2010','2015')
-
-    donut1 <-
-        ff_co2 %>%
-        filter(Year==2014) %>%
-        arrange(desc(Total_ff)) %>%
-        head(100) %>%
-        select(Country,Total_ff) %>% 
-        mutate(Country= case_when(
-            Total_ff <= 181333 ~'Countries with less than 2% contribution',
-            Total_ff > 181333 ~Country
-        )
-        )
-    
-    donut2 <-
-        ff_co2 %>%
-        filter(Year==2014) %>%
-        arrange(desc(Total_ff)) %>%
-        head(100) %>%
-        select(Country,Total_ff) %>% 
-        filter(Total_ff <= 181333) %>% 
-        mutate(Country= case_when(
-            Total_ff <= 40232 ~'Countries with less than 1% contribution',
-            Total_ff > 40232 ~Country
-        )
-        )
-    
-    #Deforestation
-    forest_area <-forest_area %>% 
-        dplyr::rename_all(function(x) paste0("Y", x)) %>% 
-        rename('CODE'='YCountry Code','Country'='YCountry Name')
-    
-    countrycodes <- countrycodes %>% 
-        rename('CODE'='Three_Letter_Country_Code') %>% 
-        select('Continent_Name','Country_Name','CODE')
-    
-    forest_bycont <- right_join(countrycodes,forest_area, by='CODE') %>% 
-        group_by(Continent_Name) %>% 
-        mutate_if(is.numeric,replace_na,0) %>% 
-        summarise_if(is.numeric,funs(sum)) %>% 
-        head(-1) %>% 
-        pivot_longer(cols=Y1990:Y2016, names_to='Year',values_to='km_forest') %>% 
-        pivot_wider(names_from=Continent_Name,values_from=km_forest) %>% 
-        rename('North_America'='North America','South_America'='South America') 
-    
-    numbers <- '([0-9]{4})'
-    
-    forest_bycont$Year <- str_extract_all(forest_bycont$Year,numbers)
-    
-    
-#Plot CAUSES:
+#CAUSES plot:
     output$globalffg <- renderPlotly({
 
         globalffg <- plot_ly(global_ff, x=~Year, y=~Total, type='scatter', mode='lines', 
@@ -137,27 +64,6 @@ shinyServer(function(input, output) {
     })
 
     
-#EFFECTS data:
-    #Sea level
-    sealevel <-
-        sealevel %>%
-        select(-`NOAA Adjusted Sea Level`) %>%
-        rename('Upper_Error'='Upper Error Bound', 'Lower_Error' = 'Lower Error Bound', 'Avg_level_rise'='CSIRO Adjusted Sea Level')
-    #Flooding
-    flooding <- disaster %>% 
-        rename('Disaster_type'='Disaster Type') %>% 
-        filter(Disaster_type=='Flood') %>% 
-        count(Year) %>% 
-        filter(Year >= 1960)
-    #Natural disasters
-    disaster <- disaster %>% 
-        filter(Year >= 1990) %>% 
-        select(Year,Country,ISO) %>% 
-        group_by(Year) %>% 
-        add_count(Country,name='Number_disasters')
-    
-    disaster <- disaster[!duplicated(disaster), ]
-    
     
 #EFFECTS plot:
     output$seaplot <- renderPlotly({
@@ -189,20 +95,6 @@ shinyServer(function(input, output) {
     })
 
 
-    
-#ACTION data:
-    hydro <- hydro %>%
-        rename('hydro'='2015','Country'='Country Name') %>%
-        select(Country,hydro)
-
-    nonhydro <- nonhydro %>%
-        rename('nonhydro'='2015','Country'='Country Name','ISO'='Country Code') %>%
-        select(Country,nonhydro)
-
-
-    energy <- full_join(hydro,nonhydro,by='Country') %>%
-        mutate('nonrenewable'=100-(hydro+nonhydro)) %>%
-        drop_na()
 
 #ACTION reactive:
     energyd1 <- reactive({
