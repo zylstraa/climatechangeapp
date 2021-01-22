@@ -22,7 +22,7 @@ causes <-
                conditionalPanel(
                  condition = "input.cause == 'Deforestation'",
                  fluidRow(
-                   img(src = "images/deforestation.png", height=150,width=152)
+                   tags$a(img(src = "images/deforestation.png", height=150,width=152),href='http://www.fao.org/home/en/')
                  )
                )
              ),
@@ -47,19 +47,20 @@ causes <-
                conditionalPanel(
                  condition = "input.cause == 'CO2 emissions by country'",
                fluidRow(
-                 column(6,
+                 column(12,
                         tags$div(
-                          (HTML('<h4 class="plotTitle">CO2 fossil fuel emissions by country (in million metric tons)<br>Top Offenders</br>'))
+                          (HTML('<h3 class="plotTitle">CO2 fossil fuel emissions by country (in million metric tons)<br><br><h4>Top Offenders</h4></br>'))
                         ),
                         plotlyOutput('donut1g')
                  ),
-                 column(6,
+                 fluidRow(
+                 column(12,
                         tags$div(
-                          (HTML('<h4 class="plotTitle">CO2 fossil fuel emissions by country (in million metric tons)<br>Those contributing <2%</br>'))
+                          (HTML('<h3 class="plotTitle">CO2 fossil fuel emissions by country (in million metric tons)<br><br><h4>Those contributing <2%</h4></br>'))
                         ),
                         plotlyOutput('donut2g')
                  )
-               )
+               ))
                ),
                conditionalPanel(
                  condition = "input.cause == 'Deforestation'",

@@ -105,7 +105,7 @@ shinyServer(function(input, output) {
     output$donut1g <- renderPlotly({
         donut1g <- donut1 %>% plot_ly(labels =~Country, values=~Total_ff, marker=list(colors=color1,line=list(color='#FFFFFF',width=1)))
         donut1g <- donut1g %>% add_pie(hole=0.6)
-        donut1g <- donut1g %>% layout(showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+        donut1g <- donut1g %>% layout(axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
         donut1g
     })
@@ -114,7 +114,7 @@ shinyServer(function(input, output) {
 
         donut2g <- donut2 %>% plot_ly(labels =~Country, values=~Total_ff,marker=list(colors=color2,line=list(color='#FFFFFF',width=1)))
         donut2g <- donut2g %>% add_pie(hole=0.6)
-        donut2g <- donut2g %>% layout(showlegend=F, axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+        donut2g <- donut2g %>% layout(axis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                                   yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
         donut2g
         
