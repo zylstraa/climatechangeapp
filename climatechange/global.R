@@ -554,33 +554,20 @@ global_tempmonth <-
 
 
 
-fishg <- plot_ly(fish,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=260,
-                 colorscale='YlOrRd',reversescale=TRUE)
-fishg <- fishg %>% colorbar(title='Threatened Species')
-fishg
-
-
-
-mammalg <- plot_ly(mammal,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=200,
-                 colorscale='YlOrRd',reversescale=TRUE)
-mammalg <- mammalg %>% colorbar(title='Threatened Species')
-mammalg
 
 
 
 
-birdg <- plot_ly(bird,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=175,
-                 colorscale='YlOrRd',reversescale=TRUE)
-birdg <- birdg %>% colorbar(title='Threatened Species')
-birdg
 
 
 
 
-plantg <- plot_ly(plant,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=1000,
-                 colorscale='YlOrRd',reversescale=TRUE)
-plantg <- plantg %>% colorbar(title='Threatened Species')
-plantg
+
+
+
+
+
+
 
 
 

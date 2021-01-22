@@ -86,7 +86,34 @@ shinyServer(function(input, output) {
                              text=~Country,frame=~Year,zauto=FALSE,zmin=1,zmax=35,color='YlOrRd')
         disasterg
     })
-
+    
+    output$fishg <- renderPlotly({
+        fishg <- plot_ly(fish,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=260,
+                         colorscale='YlOrRd',reversescale=TRUE)
+        fishg <- fishg %>% colorbar(title='Threatened Species')
+        fishg
+    })
+    
+    output$mammalg <- renderPlotly({
+        mammalg <- plot_ly(mammal,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=200,
+                           colorscale='YlOrRd',reversescale=TRUE)
+        mammalg <- mammalg %>% colorbar(title='Threatened Species')
+        mammalg
+    })
+    
+    output$birdg <- renderPlotly({
+        birdg <- plot_ly(bird,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=175,
+                         colorscale='YlOrRd',reversescale=TRUE)
+        birdg <- birdg %>% colorbar(title='Threatened Species')
+        birdg
+    })
+    
+    output$plantg <- renderPlotly({
+        plantg <- plot_ly(plant,type='choropleth',locations=~ISO,z=~Species,zauto=FALSE,zmin=0,zmax=1000,
+                          colorscale='YlOrRd',reversescale=TRUE)
+        plantg <- plantg %>% colorbar(title='Threatened Species')
+        plantg
+    })
 
 
 #ACTION reactive:

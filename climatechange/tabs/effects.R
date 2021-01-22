@@ -25,8 +25,11 @@ effects <-
                conditionalPanel(
                  condition = "input.effect == 'Threatened Species'",
                  fluidRow(
-                   tags$a(img(src = "images/emdat.png", height=90,width=325),href='https://www.emdat.be/')
-             )
+                   tags$a(img(src = "images/fish.png", height=90,width=325),href='https://www.fishbase.se/search.php')
+                  ),
+                 fluidRow(
+                   tags$a(img(src = "images/mammal.png", height=223,width=240),href='https://www.iucnredlist.org/')
+                 )
              )
              ),
            mainPanel(
@@ -55,8 +58,45 @@ effects <-
                       plotlyOutput('disasterg'),
                     )
              )
-           ))
+           )),
+           conditionalPanel(
+             condition = "input.effect == 'Threatened Species'",
+             tabsetPanel(type = "tabs",
+                  tabPanel('Fish',
+                      fluidRow(
+                        column(12,
+                               tags$div(
+                                 (HTML('<h4 class="plotTitle">Number of Fish Species considered Threatened (2018)</h4>')),
+                                 plotlyOutput('fishg'))
+                      ))),
+                  tabPanel('Mammal',
+                           fluidRow(
+                             column(12,
+                                tags$div(
+                                  (HTML('<h4 class="plotTitle">Number of Mammal Species considered Threatened (2018)</h4>')),
+                                  plotlyOutput('mammalg')
+                                    )
+                           ))
+                        ),
+                  tabPanel('Bird',
+                           fluidRow(
+                             column(12,
+                             tags$div(
+                               (HTML('<h4 class="plotTitle">Number of Bird Species considered Threatened (2018)</h4>')),
+                               plotlyOutput('birdg')
+                             )
+                           ))
+                           ),
+                  tabPanel('Plants',
+                           fluidRow(
+                             column(12,
+                                tags$div(
+                                  (HTML('<h4 class="plotTitle">Number of Plant Species considered Threatened (2018)</h4>')),
+                                  plotlyOutput('plantg')
+                                    ))
+                           ))
     
   )
   )
 )
+) )
