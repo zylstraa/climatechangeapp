@@ -155,6 +155,12 @@ shinyServer(function(input, output) {
                            marker = list(colors = color3,line = list(color = '#FFFFFF', width = 1)))
         energyg
     })
-
+#Link Download:
+    output$climatechange <- downloadHandler(
+        filename = "climatechange.pdf",
+        content = function(file) {
+            file.copy("www/climatechange.pdg", file)
+        }
+    )
 
  })

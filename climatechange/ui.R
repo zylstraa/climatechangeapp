@@ -13,7 +13,8 @@ source('tabs/homepage.r')
 shinyUI(
 
     # Application title
-    navbarPage(title='Climate Change: Midcourse Project',
+    navbarPage(title='Climate Change',
+               theme='style.css',
                home,
                causes,
                effects,

@@ -7,7 +7,11 @@ action <-
                selectInput('Country2','Pick a Country',
                            energy$Country),
                selectInput('Country3','Pick a Country',
-                           energy$Country)),
+                           energy$Country),
+               br(rows=3),
+               h3('Sources'),
+               br(),
+               tags$a(img(src = "images/iea.png", height=150,width=152),href='https://www.iea.org/fuels-and-technologies')),
              mainPanel(
                fluidRow(
                 column(width=4,

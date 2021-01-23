@@ -1,0 +1,84 @@
+/* climate Color Palette
+- grey: eef0e9
+- coral: EE8E88
+- green: 677c40
+- Beige: dcc5a8
+- Grey: b6b6b6
+- White: ffffff
+*/
+
+/* Default font family and color */
+p, h1, h2, h3, h4, h5, h6, span {
+  color: #101a17;
+  font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif;
+}
+
+*/
+.navbar {
+  background: #eef0e9;
+}
+.navbar-brand {
+  padding-top: 10px;
+}
+
+/* Under Home Menu */
+/* Title Panel */
+.titlePanel {
+  margin: auto;
+  margin-top: 3em;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
+}
+.titlePanel > .title {
+  padding: 0;
+  margin: auto;
+  padding-top: .50em;
+  padding-bottom: .50em;
+  border-top: 5px solid #9aa87f;
+  border-bottom: 5px solid #9aa87f;
+  width: max-content;
+  color: #b6b6b6;
+}
+.titlePanel .representation {
+  color: #e59824;
+}
+.titlePanel .inclusion {
+  color: #dcc5a8;
+}
+/* Under Home Menu > Body Text */
+.bodyTextContainer {
+  margin: auto;
+  width: 70%;
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+/* Sidebar */
+.customWellCol {
+  padding-left: 0;
+}
+.container-fluid {
+  padding-left: 0;
+}
+.customWell {
+  background-color: #333333;
+  color: #ffffff;
+  padding: 19px;
+  margin-bottom: 20px;
+  /*box-shadow: inset 0 1px 1px rgba(0,0,0,.05);*/
+}
+#downloadReportFormat span {
+  color: #ffffff;
+}
+.uploader {
+  margin-top: 3em;
+}
+/* Navtabs */
+.nav-tabs a {
+  color: #b6b6b6;
+}
+/* Plots */
+.shiny-plot-output {
+  max-height: 300px;
+}
