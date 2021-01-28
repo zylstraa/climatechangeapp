@@ -1,0 +1,12 @@
+name: climatechange
+title: climatechange
+username:
+account: zylstraa
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3511089
+bundleId: 4133389
+url: https://zylstraa.shinyapps.io/climatechange/
+when: 1611414693.46958
+asMultiple: FALSE
+asStatic: FALSE

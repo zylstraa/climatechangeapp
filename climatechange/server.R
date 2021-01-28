@@ -53,6 +53,7 @@ shinyServer(function(input, output) {
         forestg <- forestg %>% add_trace(y=~South_America, name='South America',line=list(color='476d46',width=2))
         forestg <- forestg %>% add_trace(y=~Africa, name='Africa',line=list(color='#bbc5aa',width=2))
         forestg <- forestg %>% add_trace(y=~Europe, name='Europe',line=list(color='abb695',width=3,dash='dot'))
+        forestg <- forestg %>% layout(yaxis=list(title='Millions of Square Km'))
         forestg
     })
 
