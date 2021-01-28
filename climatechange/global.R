@@ -6,9 +6,6 @@ library(rnaturalearth)
 library(rgeos)
 library(sf)
 
-#I'm not sure if I need to do this, however my RStudio keeps adjusting my working directory every time I open it.
-setwd("~/nss_projects/MidcourseProject/climatechangeapp/climatechange")
-
 #Global temperature found at https://datahub.io/core/global-temp#data
 global_temp <- read_csv('data/globaltempannual.csv')
 global_tempmonth <- read_csv('data/global_monthly_tempanom.csv')

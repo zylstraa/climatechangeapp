@@ -160,7 +160,7 @@ shinyServer(function(input, output) {
     output$climatechange <- downloadHandler(
         filename = "climatechange.pdf",
         content = function(file) {
-            file.copy("www/climatechange.pdg", file)
+            file.copy("www/climatechange.pdf", file)
         }
     )
 

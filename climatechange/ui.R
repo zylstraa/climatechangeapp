@@ -1,8 +1,8 @@
 #UI Source pages 
-source("tabs/causes.r")
-source('tabs/effects.r')
-source('tabs/action.r')
-source('tabs/homepage.r')
+source("tabs/causes.R")
+source('tabs/effects.R')
+source('tabs/action.R')
+source('tabs/homepage.R')
 
 
 
