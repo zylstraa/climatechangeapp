@@ -1,4 +1,4 @@
-# CLIMATE CHANGE: Just How Bad Is it?
+# Climate Change: Just How Bad Is it?
 
 Exploring multiple datasets, this app sets out to add numbers to the issues of Climate Change: the causes, effects, and action items taken globally as well as by individual country. Each tab and graph has the icon of the organization whose data it is using and can go to that site by clicking on the icon. There's also a downloadable pdf presentation to tell the story alongside usage of the Shiny app. This presentation includes a lot more information as well as articles for more reading and links to the author's Twitter and LinkedIn.
 
