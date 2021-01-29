@@ -1,6 +1,6 @@
 # Climate Change: Just How Bad Is it?
 
-Exploring multiple datasets, this app sets out to add numbers to the issues of Climate Change: the causes, effects, and action items taken globally as well as by individual country. Each tab and graph has the icon of the organization whose data it is using and can go to that site by clicking on the icon. There's also a downloadable pdf presentation to tell the story alongside usage of the Shiny app. This presentation includes a lot more information as well as articles for more reading and links to the author's Twitter and LinkedIn.
+Exploring multiple datasets, this app sets out to add numbers to the issues of Climate Change: the causes, effects, and action items taken globally as well as by individual country. Each tab and graph has the icon of the organization whose data it is using and can go to that site by clicking on the icon. There's also a downloadable pdf presentation to tell the story alongside usage of the Shiny app. This presentation includes a lot more information as well as articles for more reading and links to the author's Twitter and LinkedIn. The app can be accessed here: https://zylstraa.shinyapps.io/climatechange/
 
 
 ## Causes
@@ -14,11 +14,11 @@ Here the user can look at each country's electricity production by renewable (no
 
 ### Data
 The data used was from the following data sets:
-https://datahub.io/core/global-temp#data
-https://datahub.io/core/co2-ppm
-https://datahub.io/core/co2-fossil-by-nation#data
-https://data.worldbank.org/indicator/AG.LND.FRST.K2?view=chart
-https://datahub.io/JohnSnowLabs/country-and-continent-codes-list
+https://datahub.io/core/global-temp#data <br>
+https://datahub.io/core/co2-ppm <br>
+https://datahub.io/core/co2-fossil-by-nation#data <br>
+https://data.worldbank.org/indicator/AG.LND.FRST.K2?view=chart <br>
+https://datahub.io/JohnSnowLabs/country-and-continent-codes-list <br>
 https://datahub.io/core/sea-level-rise#resource-epa-sea-level
 https://data.worldbank.org/indicator/EG.ELC.HYRO.ZS?end=2015&start=1960&view=chart
 https://data.worldbank.org/indicator/EG.ELC.RNWX.ZS?view=chart
